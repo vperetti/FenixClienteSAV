@@ -1,0 +1,26 @@
+# Build artifacts
+*.obj
+*.tds
+*.rsp
+*.RES
+*.res
+*.idb
+*.pdb
+*.ncb
+*.suo
+*.user
+*.sdf
+*.opensdf
+.vs/
+Debug/
+Release/
+*.tlog
+*.log
+*.lastbuildstate
+
+# Instaladores por cliente (distribuidos via GitHub Releases)
+dist/
+
+# OS
+Thumbs.db
+.DS_Store

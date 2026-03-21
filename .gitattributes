@@ -1,0 +1,6 @@
+*.exe binary
+*.zip binary
+*.jar binary
+*.bmp binary
+*.ico binary
+*.dll binary

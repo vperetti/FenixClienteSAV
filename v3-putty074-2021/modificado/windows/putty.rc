@@ -1,0 +1,11 @@
+#include "rcstuff.h"
+
+#define APPNAME "Fenix"
+#define APPDESC "Cliente Fenix 2021"
+
+#include "winhelp.rc2"
+#include "win_res.rc2"
+
+#ifndef NO_MANIFESTS
+1 RT_MANIFEST "putty.mft"
+#endif /* NO_MANIFESTS */

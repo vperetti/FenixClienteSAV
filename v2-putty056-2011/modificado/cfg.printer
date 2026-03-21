@@ -1,0 +1,1571 @@
+CONFIG.C:    ctrl_checkbox(s, "Disable xterm-style mouse reporting", 'x',
+LDISC.C:	term->ldisc = ldisc;
+LDISC.C:	ldisc->term->ldisc = NULL;
+LDISCUCS.C:	rv = wc_to_mb(ldisc->term->ucsdata->line_codepage, 0, widebuf, len,
+LDISCUCS.C:		      linebuffer, linesize, NULL, NULL, ldisc->term->ucsdata);
+TERMINAL.C:#define posdiff(p1,p2) ( ((p1).y - (p2).y) * (term->cols+1) + (p1).x - (p2).x )
+TERMINAL.C:#define incpos(p) ( (p).x == term->cols ? ((p).x = 0, (p).y++, 1) : ((p).x++, 0) )
+TERMINAL.C:#define decpos(p) ( (p).x == 0 ? ((p).x = term->cols, (p).y--, 1) : ((p).x--, 0) )
+TERMINAL.C:    if ( ((CL_##x)&term->compatibility_level) == 0 ) { 	\
+TERMINAL.C:       term->termstate=TOPLEVEL;			\
+TERMINAL.C:    if ( ((CL_##x|CL_##y)&term->compatibility_level) == 0 ) { \
+TERMINAL.C:       term->termstate=TOPLEVEL;			\
+TERMINAL.C:#define has_compat(x) ( ((CL_##x)&term->compatibility_level) != 0 )
+TERMINAL.C:    int sblines = count234(term->scrollback);
+TERMINAL.C:    if (term->cfg.erase_to_scrollback &&
+TERMINAL.C:	term->alt_which && term->alt_screen) {
+TERMINAL.C:	    sblines += term->alt_sblines;
+TERMINAL.C:	whichtree = term->screen;
+TERMINAL.C:	if (term->cfg.erase_to_scrollback &&
+TERMINAL.C:	    term->alt_which && term->alt_screen) {
+TERMINAL.C:	    altlines = term->alt_sblines;
+TERMINAL.C:	    whichtree = term->scrollback;
+TERMINAL.C:	    treeindex = y + altlines + count234(term->scrollback);
+TERMINAL.C:	    whichtree = term->alt_screen;
+TERMINAL.C:	    treeindex = y + term->alt_sblines;
+TERMINAL.C:	    /* treeindex = y + count234(term->alt_screen); */
+TERMINAL.C:    newline = resizeline(line, term->cols);
+TERMINAL.C:    term->curs.x = term->curs.y = 0;
+TERMINAL.C:    term->alt_x = term->alt_y = 0;
+TERMINAL.C:    term->savecurs.x = term->savecurs.y = 0;
+TERMINAL.C:    term->alt_t = term->marg_t = 0;
+TERMINAL.C:    if (term->rows != -1)
+TERMINAL.C:	term->alt_b = term->marg_b = term->rows - 1;
+TERMINAL.C:	term->alt_b = term->marg_b = 0;
+TERMINAL.C:    if (term->cols != -1) {
+TERMINAL.C:	for (i = 0; i < term->cols; i++)
+TERMINAL.C:	    term->tabs[i] = (i % 8 == 0 ? TRUE : FALSE);
+TERMINAL.C:    term->alt_om = term->dec_om = term->cfg.dec_om;
+TERMINAL.C:    term->alt_ins = term->insert = FALSE;
+TERMINAL.C:    term->alt_wnext = term->wrapnext = term->save_wnext = FALSE;
+TERMINAL.C:    term->alt_wrap = term->wrap = term->cfg.wrap_mode;
+TERMINAL.C:    term->alt_cset = term->cset = term->save_cset = 0;
+TERMINAL.C:    term->alt_utf = term->utf = term->save_utf = 0;
+TERMINAL.C:    term->utf_state = 0;
+TERMINAL.C:    term->alt_sco_acs = term->sco_acs = term->save_sco_acs = 0;
+TERMINAL.C:    term->cset_attr[0] = term->cset_attr[1] = term->save_csattr = ATTR_ASCII;
+TERMINAL.C:    term->rvideo = 0;
+TERMINAL.C:    term->in_vbell = FALSE;
+TERMINAL.C:    term->cursor_on = 1;
+TERMINAL.C:    term->big_cursor = 0;
+TERMINAL.C:    term->default_attr = term->save_attr = term->curr_attr = ATTR_DEFAULT;
+TERMINAL.C:    term->term_editing = term->term_echoing = FALSE;
+TERMINAL.C:    term->app_cursor_keys = term->cfg.app_cursor;
+TERMINAL.C:    term->app_keypad_keys = term->cfg.app_keypad;
+TERMINAL.C:    term->use_bce = term->cfg.bce;
+TERMINAL.C:    term->blink_is_real = term->cfg.blinktext;
+TERMINAL.C:    term->erase_char = ERASE_CHAR;
+TERMINAL.C:    term->alt_which = 0;
+TERMINAL.C:	    term->wordness[i] = term->cfg.wordness[i];
+TERMINAL.C:    if (term->screen) {
+TERMINAL.C:    ctx = get_ctx(term->frontend);
+TERMINAL.C:	int need_sbar_update = term->seen_disp_event;
+TERMINAL.C:	if (term->seen_disp_event && term->cfg.scroll_on_disp) {
+TERMINAL.C:	    term->disptop = 0;	       /* return to main screen */
+TERMINAL.C:	    term->seen_disp_event = 0;
+TERMINAL.C:	if (!term->cfg.arabicshaping || !term->cfg.bidi)
+TERMINAL.C:	    term->wcFrom = sresize(term->wcFrom, term->cols, bidi_char);
+TERMINAL.C:	    term->ltemp = sresize(term->ltemp, term->cols+1, unsigned long);
+TERMINAL.C:	    term->wcTo = sresize(term->wcTo, term->cols, bidi_char);
+TERMINAL.C:	sys_cursor(term->frontend, term->curs.x, term->curs.y - term->disptop);
+TERMINAL.C:    term->beep_overloaded = FALSE;
+TERMINAL.C:    while (term->beephead) {
+TERMINAL.C:	struct beeptime *tmp = term->beephead;
+TERMINAL.C:	term->beephead = tmp->next;
+TERMINAL.C:    term->beeptail = NULL;
+TERMINAL.C:    term->nbeeps = 0;
+TERMINAL.C:    if (term->cfg.scroll_on_key) {
+TERMINAL.C:	term->disptop = 0;	       /* return to main screen */
+TERMINAL.C:	term->seen_disp_event = 1;
+TERMINAL.C:    if (term->ldisc)		       /* cause ldisc to notice changes */
+TERMINAL.C:	ldisc_send(term->ldisc, NULL, 0, 0);
+TERMINAL.C:    term->disptop = 0;
+TERMINAL.C:    reset_wrap = (term->cfg.wrap_mode != cfg->wrap_mode);
+TERMINAL.C:    reset_decom = (term->cfg.dec_om != cfg->dec_om);
+TERMINAL.C:    reset_bce = (term->cfg.bce != cfg->bce);
+TERMINAL.C:    reset_blink = (term->cfg.blinktext != cfg->blinktext);
+TERMINAL.C:    for (i = 0; i < lenof(term->cfg.wordness); i++)
+TERMINAL.C:	if (term->cfg.wordness[i] != cfg->wordness[i])
+TERMINAL.C:    term->cfg = *cfg;		       /* STRUCTURE COPY */
+TERMINAL.C:	term->alt_wrap = term->wrap = term->cfg.wrap_mode;
+TERMINAL.C:	term->alt_om = term->dec_om = term->cfg.dec_om;
+TERMINAL.C:	term->use_bce = term->cfg.bce;
+TERMINAL.C:	if (term->use_bce)
+TERMINAL.C:	    term->erase_char = (' ' | ATTR_ASCII |
+TERMINAL.C:				(term->curr_attr &
+TERMINAL.C:	    term->erase_char = ERASE_CHAR;
+TERMINAL.C:	term->blink_is_real = term->cfg.blinktext;
+TERMINAL.C:	    term->wordness[i] = term->cfg.wordness[i];
+TERMINAL.C:    if (term->cfg.no_alt_screen)
+TERMINAL.C:    if (term->cfg.no_mouse_rep) {
+TERMINAL.C:	term->xterm_mouse = 0;
+TERMINAL.C:	set_raw_mouse_mode(term->frontend, 0);
+TERMINAL.C:    if (term->cfg.no_remote_charset) {
+TERMINAL.C:	term->cset_attr[0] = term->cset_attr[1] = ATTR_ASCII;
+TERMINAL.C:	term->sco_acs = term->alt_sco_acs = 0;
+TERMINAL.C:	term->utf = 0;
+TERMINAL.C:    if (!*term->cfg.printer) {
+TERMINAL.C:    term->disptop = 0;
+TERMINAL.C:    while ((line = delpos234(term->scrollback, 0)) != NULL) {
+TERMINAL.C:    term->tempsblines = 0;
+TERMINAL.C:    term->alt_sblines = 0;
+TERMINAL.C:    term->frontend = frontend;
+TERMINAL.C:    term->ucsdata = ucsdata;
+TERMINAL.C:    term->cfg = *mycfg;		       /* STRUCTURE COPY */
+TERMINAL.C:    term->logctx = NULL;
+TERMINAL.C:    term->compatibility_level = TM_PUTTY;
+TERMINAL.C:    strcpy(term->id_string, "\033[?6c");
+TERMINAL.C:    term->last_blink = term->last_tblink = 0;
+TERMINAL.C:    term->paste_buffer = NULL;
+TERMINAL.C:    term->paste_len = 0;
+TERMINAL.C:    term->last_paste = 0;
+TERMINAL.C:    bufchain_init(&term->inbuf);
+TERMINAL.C:    bufchain_init(&term->printer_buf);
+TERMINAL.C:    term->printing = term->only_printing = FALSE;
+TERMINAL.C:    term->print_job = NULL;
+TERMINAL.C:    term->vt52_mode = FALSE;
+TERMINAL.C:    term->cr_lf_return = FALSE;
+TERMINAL.C:    term->seen_disp_event = FALSE;
+TERMINAL.C:    term->xterm_mouse = term->mouse_is_down = FALSE;
+TERMINAL.C:    term->reset_132 = FALSE;
+TERMINAL.C:    term->blinker = term->tblinker = 0;
+TERMINAL.C:    term->has_focus = 1;
+TERMINAL.C:    term->repeat_off = FALSE;
+TERMINAL.C:    term->termstate = TOPLEVEL;
+TERMINAL.C:    term->selstate = NO_SELECTION;
+TERMINAL.C:    term->curstype = 0;
+TERMINAL.C:    term->screen = term->alt_screen = term->scrollback = NULL;
+TERMINAL.C:    term->tempsblines = 0;
+TERMINAL.C:    term->alt_sblines = 0;
+TERMINAL.C:    term->disptop = 0;
+TERMINAL.C:    term->disptext = term->dispcurs = NULL;
+TERMINAL.C:    term->tabs = NULL;
+TERMINAL.C:    term->rows = term->cols = -1;
+TERMINAL.C:    term->beephead = term->beeptail = NULL;
+TERMINAL.C:    term->scrollhead = term->scrolltail = NULL;
+TERMINAL.C:    term->nbeeps = 0;
+TERMINAL.C:    term->lastbeep = FALSE;
+TERMINAL.C:    term->beep_overloaded = FALSE;
+TERMINAL.C:    term->attr_mask = 0xffffffff;
+TERMINAL.C:    term->resize_fn = NULL;
+TERMINAL.C:    term->resize_ctx = NULL;
+TERMINAL.C:    term->in_term_out = FALSE;
+TERMINAL.C:    term->ltemp = NULL;
+TERMINAL.C:    term->wcFrom = NULL;
+TERMINAL.C:    term->wcTo = NULL;
+TERMINAL.C:    term->bidi_cache_size = 0;
+TERMINAL.C:    term->pre_bidi_cache = term->post_bidi_cache = NULL;
+TERMINAL.C:    while ((line = delpos234(term->scrollback, 0)) != NULL)
+TERMINAL.C:    freetree234(term->scrollback);
+TERMINAL.C:    while ((line = delpos234(term->screen, 0)) != NULL)
+TERMINAL.C:    freetree234(term->screen);
+TERMINAL.C:    while ((line = delpos234(term->alt_screen, 0)) != NULL)
+TERMINAL.C:    freetree234(term->alt_screen);
+TERMINAL.C:    sfree(term->disptext);
+TERMINAL.C:    while (term->beephead) {
+TERMINAL.C:	beep = term->beephead;
+TERMINAL.C:	term->beephead = beep->next;
+TERMINAL.C:    bufchain_clear(&term->inbuf);
+TERMINAL.C:    if(term->print_job)
+TERMINAL.C:	printer_finish_job(term->print_job);
+TERMINAL.C:    bufchain_clear(&term->printer_buf);
+TERMINAL.C:    sfree(term->paste_buffer);
+TERMINAL.C:    sfree(term->ltemp);
+TERMINAL.C:    sfree(term->wcFrom);
+TERMINAL.C:    sfree(term->wcTo);
+TERMINAL.C:    for (i = 0; i < term->bidi_cache_size; i++) {
+TERMINAL.C:	sfree(term->pre_bidi_cache[i]);
+TERMINAL.C:	sfree(term->post_bidi_cache[i]);
+TERMINAL.C:    sfree(term->pre_bidi_cache);
+TERMINAL.C:    sfree(term->post_bidi_cache);
+TERMINAL.C:    int save_alt_which = term->alt_which;
+TERMINAL.C:    if (newrows == term->rows && newcols == term->cols &&
+TERMINAL.C:	newsavelines == term->savelines)
+TERMINAL.C:    term->alt_t = term->marg_t = 0;
+TERMINAL.C:    term->alt_b = term->marg_b = newrows - 1;
+TERMINAL.C:    if (term->rows == -1) {
+TERMINAL.C:	term->scrollback = newtree234(NULL);
+TERMINAL.C:	term->screen = newtree234(NULL);
+TERMINAL.C:	term->tempsblines = 0;
+TERMINAL.C:	term->rows = 0;
+TERMINAL.C:    sblen = count234(term->scrollback);
+TERMINAL.C:    assert(term->rows == count234(term->screen));
+TERMINAL.C:    while (term->rows < newrows) {
+TERMINAL.C:	if (term->tempsblines > 0) {
+TERMINAL.C:	    assert(sblen >= term->tempsblines);
+TERMINAL.C:	    line = delpos234(term->scrollback, --sblen);
+TERMINAL.C:	    term->tempsblines -= 1;
+TERMINAL.C:	    addpos234(term->screen, line, 0);
+TERMINAL.C:	    term->curs.y += 1;
+TERMINAL.C:	    term->savecurs.y += 1;
+TERMINAL.C:	    addpos234(term->screen, line, count234(term->screen));
+TERMINAL.C:	term->rows += 1;
+TERMINAL.C:    while (term->rows > newrows) {
+TERMINAL.C:	if (term->curs.y < term->rows - 1) {
+TERMINAL.C:	    sfree(delpos234(term->screen, term->rows - 1));
+TERMINAL.C:	    line = delpos234(term->screen, 0);
+TERMINAL.C:	    addpos234(term->scrollback, line, sblen++);
+TERMINAL.C:	    term->tempsblines += 1;
+TERMINAL.C:	    term->curs.y -= 1;
+TERMINAL.C:	    term->savecurs.y -= 1;
+TERMINAL.C:	term->rows -= 1;
+TERMINAL.C:    assert(term->rows == newrows);
+TERMINAL.C:    assert(count234(term->screen) == newrows);
+TERMINAL.C:	line = delpos234(term->scrollback, 0);
+TERMINAL.C:    if (sblen < term->tempsblines)
+TERMINAL.C:	term->tempsblines = sblen;
+TERMINAL.C:    assert(count234(term->scrollback) <= newsavelines);
+TERMINAL.C:    assert(count234(term->scrollback) >= term->tempsblines);
+TERMINAL.C:    term->disptop = 0;
+TERMINAL.C:    sfree(term->disptext);
+TERMINAL.C:    term->disptext = newdisp;
+TERMINAL.C:    term->dispcurs = NULL;
+TERMINAL.C:	    line[j + 1] = term->erase_char;
+TERMINAL.C:    if (term->alt_screen) {
+TERMINAL.C:	while (NULL != (line = delpos234(term->alt_screen, 0)))
+TERMINAL.C:	freetree234(term->alt_screen);
+TERMINAL.C:    term->alt_screen = newalt;
+TERMINAL.C:    term->alt_sblines = 0;
+TERMINAL.C:    term->tabs = sresize(term->tabs, newcols, unsigned char);
+TERMINAL.C:	for (i = (term->cols > 0 ? term->cols : 0); i < newcols; i++)
+TERMINAL.C:	    term->tabs[i] = (i % 8 == 0 ? TRUE : FALSE);
+TERMINAL.C:    if (term->savecurs.y < 0)
+TERMINAL.C:	term->savecurs.y = 0;
+TERMINAL.C:    if (term->savecurs.y >= newrows)
+TERMINAL.C:	term->savecurs.y = newrows - 1;
+TERMINAL.C:    if (term->curs.y < 0)
+TERMINAL.C:	term->curs.y = 0;
+TERMINAL.C:    if (term->curs.y >= newrows)
+TERMINAL.C:	term->curs.y = newrows - 1;
+TERMINAL.C:    if (term->curs.x >= newcols)
+TERMINAL.C:	term->curs.x = newcols - 1;
+TERMINAL.C:    term->alt_x = term->alt_y = 0;
+TERMINAL.C:    term->wrapnext = term->alt_wnext = FALSE;
+TERMINAL.C:    term->rows = newrows;
+TERMINAL.C:    term->cols = newcols;
+TERMINAL.C:    term->savelines = newsavelines;
+TERMINAL.C:    if (term->resize_fn)
+TERMINAL.C:	term->resize_fn(term->resize_ctx, term->cols, term->rows);
+TERMINAL.C:    term->resize_fn = resize_fn;
+TERMINAL.C:    term->resize_ctx = resize_ctx;
+TERMINAL.C:    if (term->cols > 0 && term->rows > 0)
+TERMINAL.C:	resize_fn(resize_ctx, term->cols, term->rows);
+TERMINAL.C:	    if (line[j + 1] != term->erase_char) break;
+TERMINAL.C:    if (which != term->alt_which) {
+TERMINAL.C:	term->alt_which = which;
+TERMINAL.C:	ttr = term->alt_screen;
+TERMINAL.C:	term->alt_screen = term->screen;
+TERMINAL.C:	term->screen = ttr;
+TERMINAL.C:	term->alt_sblines = find_last_nonempty_line(term, term->alt_screen) + 1;
+TERMINAL.C:	t = term->curs.x;
+TERMINAL.C:	    term->curs.x = term->alt_x;
+TERMINAL.C:	term->alt_x = t;
+TERMINAL.C:	t = term->curs.y;
+TERMINAL.C:	    term->curs.y = term->alt_y;
+TERMINAL.C:	term->alt_y = t;
+TERMINAL.C:	t = term->marg_t;
+TERMINAL.C:	if (!reset) term->marg_t = term->alt_t;
+TERMINAL.C:	term->alt_t = t;
+TERMINAL.C:	t = term->marg_b;
+TERMINAL.C:	if (!reset) term->marg_b = term->alt_b;
+TERMINAL.C:	term->alt_b = t;
+TERMINAL.C:	t = term->dec_om;
+TERMINAL.C:	if (!reset) term->dec_om = term->alt_om;
+TERMINAL.C:	term->alt_om = t;
+TERMINAL.C:	t = term->wrap;
+TERMINAL.C:	if (!reset) term->wrap = term->alt_wrap;
+TERMINAL.C:	term->alt_wrap = t;
+TERMINAL.C:	t = term->wrapnext;
+TERMINAL.C:	if (!reset) term->wrapnext = term->alt_wnext;
+TERMINAL.C:	term->alt_wnext = t;
+TERMINAL.C:	t = term->insert;
+TERMINAL.C:	if (!reset) term->insert = term->alt_ins;
+TERMINAL.C:	term->alt_ins = t;
+TERMINAL.C:	t = term->cset;
+TERMINAL.C:	if (!reset) term->cset = term->alt_cset;
+TERMINAL.C:	term->alt_cset = t;
+TERMINAL.C:	t = term->utf;
+TERMINAL.C:	if (!reset) term->utf = term->alt_utf;
+TERMINAL.C:	term->alt_utf = t;
+TERMINAL.C:	t = term->sco_acs;
+TERMINAL.C:	if (!reset) term->sco_acs = term->alt_sco_acs;
+TERMINAL.C:	term->alt_sco_acs = t;
+TERMINAL.C:    if (reset && term->screen) {
+TERMINAL.C:    if (term->screen)
+TERMINAL.C:    set_sbar(term->frontend, nscroll + term->rows,
+TERMINAL.C:	     nscroll + term->disptop, term->rows);
+TERMINAL.C:    if (poslt(from, term->selend) && poslt(term->selstart, to))
+TERMINAL.C:    if (topline != 0 || term->alt_which != 0)
+TERMINAL.C:    olddisptop = term->disptop;
+TERMINAL.C:	    line = delpos234(term->screen, botline);
+TERMINAL.C:            line = resizeline(line, term->cols);
+TERMINAL.C:	    for (i = 0; i < term->cols; i++)
+TERMINAL.C:		line[i + 1] = term->erase_char;
+TERMINAL.C:	    line[term->cols + 1] = 0;
+TERMINAL.C:	    addpos234(term->screen, line, topline);
+TERMINAL.C:	    if (term->selstart.y >= topline && term->selstart.y <= botline) {
+TERMINAL.C:		term->selstart.y++;
+TERMINAL.C:		if (term->selstart.y > botline) {
+TERMINAL.C:		    term->selstart.y = botline + 1;
+TERMINAL.C:		    term->selstart.x = 0;
+TERMINAL.C:	    if (term->selend.y >= topline && term->selend.y <= botline) {
+TERMINAL.C:		term->selend.y++;
+TERMINAL.C:		if (term->selend.y > botline) {
+TERMINAL.C:		    term->selend.y = botline + 1;
+TERMINAL.C:		    term->selend.x = 0;
+TERMINAL.C:	    line = delpos234(term->screen, topline);
+TERMINAL.C:	    if (sb && term->savelines > 0) {
+TERMINAL.C:		int sblen = count234(term->scrollback);
+TERMINAL.C:		if (sblen == term->savelines) {
+TERMINAL.C:		    sblen--, line2 = delpos234(term->scrollback, 0);
+TERMINAL.C:		    line2 = snewn(term->cols + 2, TTYPE);
+TERMINAL.C:		    line2[0] = term->cols;
+TERMINAL.C:		    term->tempsblines += 1;
+TERMINAL.C:		addpos234(term->scrollback, line, sblen);
+TERMINAL.C:		if (term->disptop > -term->savelines && term->disptop < 0)
+TERMINAL.C:		    term->disptop--;
+TERMINAL.C:            line = resizeline(line, term->cols);
+TERMINAL.C:	    for (i = 0; i < term->cols; i++)
+TERMINAL.C:		line[i + 1] = term->erase_char;
+TERMINAL.C:	    line[term->cols + 1] = LATTR_NORM;
+TERMINAL.C:	    addpos234(term->screen, line, botline);
+TERMINAL.C:	    seltop = sb ? -term->savelines : topline;
+TERMINAL.C:	    if (term->selstate != NO_SELECTION) {
+TERMINAL.C:		if (term->selstart.y >= seltop &&
+TERMINAL.C:		    term->selstart.y <= botline) {
+TERMINAL.C:		    term->selstart.y--;
+TERMINAL.C:		    if (term->selstart.y < seltop) {
+TERMINAL.C:			term->selstart.y = seltop;
+TERMINAL.C:			term->selstart.x = 0;
+TERMINAL.C:		if (term->selend.y >= seltop && term->selend.y <= botline) {
+TERMINAL.C:		    term->selend.y--;
+TERMINAL.C:		    if (term->selend.y < seltop) {
+TERMINAL.C:			term->selend.y = seltop;
+TERMINAL.C:			term->selend.x = 0;
+TERMINAL.C:		if (term->selanchor.y >= seltop &&
+TERMINAL.C:		    term->selanchor.y <= botline) {
+TERMINAL.C:		    term->selanchor.y--;
+TERMINAL.C:		    if (term->selanchor.y < seltop) {
+TERMINAL.C:			term->selanchor.y = seltop;
+TERMINAL.C:			term->selanchor.x = 0;
+TERMINAL.C:    shift += term->disptop - olddisptop;
+TERMINAL.C:    if (shift < term->rows && shift > -term->rows && shift != 0)
+TERMINAL.C:    if (term->scrolltail &&
+TERMINAL.C:	term->scrolltail->topline == topline && 
+TERMINAL.C:	term->scrolltail->botline == botline) {
+TERMINAL.C:	term->scrolltail->lines += lines;
+TERMINAL.C:	if (!term->scrollhead)
+TERMINAL.C:	    term->scrollhead = newscroll;
+TERMINAL.C:	    term->scrolltail->next = newscroll;
+TERMINAL.C:	term->scrolltail = newscroll;
+TERMINAL.C:    start = term->disptext + topline * (term->cols + 1);
+TERMINAL.C:    end = term->disptext + (botline + 1) * (term->cols + 1);
+TERMINAL.C:    distance = (lines > 0 ? lines : -lines) * (term->cols + 1);
+TERMINAL.C:	if (term->dispcurs >= start + distance &&
+TERMINAL.C:	    term->dispcurs <= start + distance + size)
+TERMINAL.C:	    term->dispcurs -= distance;
+TERMINAL.C:	if (term->dispcurs >= start && term->dispcurs <= start + size)
+TERMINAL.C:	    term->dispcurs += distance;
+TERMINAL.C:    if (x >= term->cols)
+TERMINAL.C:	x = term->cols - 1;
+TERMINAL.C:	if ((term->curs.y >= term->marg_t || marg_clip == 2) &&
+TERMINAL.C:	    y < term->marg_t)
+TERMINAL.C:	    y = term->marg_t;
+TERMINAL.C:	if ((term->curs.y <= term->marg_b || marg_clip == 2) &&
+TERMINAL.C:	    y > term->marg_b)
+TERMINAL.C:	    y = term->marg_b;
+TERMINAL.C:    if (y >= term->rows)
+TERMINAL.C:	y = term->rows - 1;
+TERMINAL.C:    term->curs.x = x;
+TERMINAL.C:    term->curs.y = y;
+TERMINAL.C:    term->wrapnext = FALSE;
+TERMINAL.C:	term->savecurs = term->curs;
+TERMINAL.C:	term->save_attr = term->curr_attr;
+TERMINAL.C:	term->save_cset = term->cset;
+TERMINAL.C:	term->save_utf = term->utf;
+TERMINAL.C:	term->save_wnext = term->wrapnext;
+TERMINAL.C:	term->save_csattr = term->cset_attr[term->cset];
+TERMINAL.C:	term->save_sco_acs = term->sco_acs;
+TERMINAL.C:	term->curs = term->savecurs;
+TERMINAL.C:	if (term->curs.x >= term->cols)
+TERMINAL.C:	    term->curs.x = term->cols - 1;
+TERMINAL.C:	if (term->curs.y >= term->rows)
+TERMINAL.C:	    term->curs.y = term->rows - 1;
+TERMINAL.C:	term->curr_attr = term->save_attr;
+TERMINAL.C:	term->cset = term->save_cset;
+TERMINAL.C:	term->utf = term->save_utf;
+TERMINAL.C:	term->wrapnext = term->save_wnext;
+TERMINAL.C:	if (term->wrapnext && term->curs.x < term->cols-1)
+TERMINAL.C:	    term->wrapnext = FALSE;
+TERMINAL.C:	term->cset_attr[term->cset] = term->save_csattr;
+TERMINAL.C:	term->sco_acs = term->save_sco_acs;
+TERMINAL.C:	if (term->use_bce)
+TERMINAL.C:	    term->erase_char = (' ' | ATTR_ASCII |
+TERMINAL.C:				(term->curr_attr &
+TERMINAL.C:    if (x == 0 || x > term->cols)
+TERMINAL.C:    if (x == term->cols) {
+TERMINAL.C:	start.y = term->curs.y;
+TERMINAL.C:	end.y = term->curs.y + 1;
+TERMINAL.C:	end.y = term->rows;
+TERMINAL.C:	start = term->curs;
+TERMINAL.C:	end = term->curs;
+TERMINAL.C:	check_boundary(term, term->curs.x, term->curs.y);
+TERMINAL.C:    if (start.y == 0 && start.x == 0 && end.y == term->rows)
+TERMINAL.C:    if (term->cfg.erase_to_scrollback && erasing_lines_from_top) {
+TERMINAL.C:	if (end.y == term->rows) {
+TERMINAL.C:	    scrolllines = find_last_nonempty_line(term, term->screen) + 1;
+TERMINAL.C:	    if (start.x == term->cols) {
+TERMINAL.C:		ldata[start.x] = term->erase_char;
+TERMINAL.C:	    if (incpos(start) && start.y < term->rows)
+TERMINAL.C:    if (erasing_lines_from_top && !(term->alt_which))
+TERMINAL.C:	term->tempsblines = 0;
+TERMINAL.C:    if (n > term->cols - term->curs.x)
+TERMINAL.C:	n = term->cols - term->curs.x;
+TERMINAL.C:    m = term->cols - term->curs.x - n;
+TERMINAL.C:    cursplus.y = term->curs.y;
+TERMINAL.C:    cursplus.x = term->curs.x + n;
+TERMINAL.C:    check_selection(term, term->curs, cursplus);
+TERMINAL.C:    check_boundary(term, term->curs.x, term->curs.y);
+TERMINAL.C:	check_boundary(term, term->curs.x + n, term->curs.y);
+TERMINAL.C:    ldata = lineptr(term->curs.y);
+TERMINAL.C:	memmove(ldata + term->curs.x, ldata + term->curs.x + n, m * TSIZE);
+TERMINAL.C:	    ldata[term->curs.x + m++] = term->erase_char;
+TERMINAL.C:	memmove(ldata + term->curs.x + n, ldata + term->curs.x, m * TSIZE);
+TERMINAL.C:	    ldata[term->curs.x + n] = term->erase_char;
+TERMINAL.C:	    term->app_cursor_keys = state;
+TERMINAL.C:	    term->vt52_mode = !state;
+TERMINAL.C:	    if (term->vt52_mode) {
+TERMINAL.C:		term->blink_is_real = FALSE;
+TERMINAL.C:		term->vt52_bold = FALSE;
+TERMINAL.C:		term->blink_is_real = term->cfg.blinktext;
+TERMINAL.C:	    if (!term->cfg.no_remote_resize)
+TERMINAL.C:		request_resize(term->frontend, state ? 132 : 80, term->rows);
+TERMINAL.C:	    term->reset_132 = state;
+TERMINAL.C:	    term->alt_t = term->marg_t = 0;
+TERMINAL.C:	    term->alt_b = term->marg_b = term->rows - 1;
+TERMINAL.C:	    if (ticks - term->vbell_startpoint >= VBELL_TIMEOUT)
+TERMINAL.C:		term->in_vbell = FALSE;
+TERMINAL.C:	    if (term->rvideo && !state &&    /* we're turning it off... */
+TERMINAL.C:		(ticks - term->rvbell_startpoint) < VBELL_TIMEOUT) {/*...soon*/
+TERMINAL.C:		if (!term->in_vbell ||
+TERMINAL.C:		    (term->rvbell_startpoint - term->vbell_startpoint <
+TERMINAL.C:		    term->vbell_startpoint = term->rvbell_startpoint;
+TERMINAL.C:		term->in_vbell = TRUE; /* may clear rvideo but set in_vbell */
+TERMINAL.C:	    } else if (!term->rvideo && state) {
+TERMINAL.C:		term->rvbell_startpoint = ticks;
+TERMINAL.C:	    term->rvideo = state;
+TERMINAL.C:	    term->seen_disp_event = TRUE;
+TERMINAL.C:	    term->dec_om = state;
+TERMINAL.C:	    term->wrap = state;
+TERMINAL.C:	    term->repeat_off = !state;
+TERMINAL.C:	    term->term_editing = state;
+TERMINAL.C:	    if (term->ldisc)	       /* cause ldisc to notice changes */
+TERMINAL.C:		ldisc_send(term->ldisc, NULL, 0, 0);
+TERMINAL.C:	    term->cursor_on = state;
+TERMINAL.C:	    term->seen_disp_event = TRUE;
+TERMINAL.C:	    swap_screen(term, term->cfg.no_alt_screen ? 0 : state, FALSE, FALSE);
+TERMINAL.C:	    term->disptop = 0;
+TERMINAL.C:	    term->xterm_mouse = state ? 1 : 0;
+TERMINAL.C:	    set_raw_mouse_mode(term->frontend, state);
+TERMINAL.C:	    term->xterm_mouse = state ? 2 : 0;
+TERMINAL.C:	    set_raw_mouse_mode(term->frontend, state);
+TERMINAL.C:	    swap_screen(term, term->cfg.no_alt_screen ? 0 : state, TRUE, TRUE);
+TERMINAL.C:	    term->disptop = 0;
+TERMINAL.C:	    if (!term->cfg.no_alt_screen)
+TERMINAL.C:	    if (!state) term->seen_disp_event = TRUE;
+TERMINAL.C:	    if (state && !term->cfg.no_alt_screen)
+TERMINAL.C:	    if (!state) term->seen_disp_event = TRUE;
+TERMINAL.C:	    swap_screen(term, term->cfg.no_alt_screen ? 0 : state, TRUE, FALSE);
+TERMINAL.C:	    if (!state && !term->cfg.no_alt_screen)
+TERMINAL.C:	    term->disptop = 0;
+TERMINAL.C:	    term->insert = state;
+TERMINAL.C:	    term->term_echoing = !state;
+TERMINAL.C:	    if (term->ldisc)	       /* cause ldisc to notice changes */
+TERMINAL.C:		ldisc_send(term->ldisc, NULL, 0, 0);
+TERMINAL.C:	    term->cr_lf_return = state;
+TERMINAL.C:	    term->big_cursor = !state;
+TERMINAL.C:    if (term->osc_w) {
+TERMINAL.C:	while (term->osc_strlen--)
+TERMINAL.C:	    term->wordness[(unsigned char)
+TERMINAL.C:		term->osc_string[term->osc_strlen]] = term->esc_args[0];
+TERMINAL.C:	term->osc_string[term->osc_strlen] = '\0';
+TERMINAL.C:	switch (term->esc_args[0]) {
+TERMINAL.C:	    if (!term->cfg.no_remote_wintitle)
+TERMINAL.C:		set_icon(term->frontend, term->osc_string);
+TERMINAL.C:	    if (term->esc_args[0] == 1)
+TERMINAL.C:	    if (!term->cfg.no_remote_wintitle)
+TERMINAL.C:		set_title(term->frontend, term->osc_string);
+TERMINAL.C:    bufchain_clear(&term->printer_buf);
+TERMINAL.C://    if (*term->cfg.printer){
+TERMINAL.C:	    term->print_job = printer_start_job(term->cfg.printer);
+TERMINAL.C:    while ((size = bufchain_size(&term->printer_buf)) > 5) {
+TERMINAL.C:	bufchain_prefix(&term->printer_buf, &data, &len);
+TERMINAL.C://	if (*term->cfg.printer){
+TERMINAL.C:		printer_job_data(term->print_job, data, len);	
+TERMINAL.C:	bufchain_consume(&term->printer_buf, len);
+TERMINAL.C:    if (!term->printing && !term->only_printing)
+TERMINAL.C:    while ((size = bufchain_size(&term->printer_buf)) > 0) {
+TERMINAL.C:	bufchain_prefix(&term->printer_buf, &data, &len);
+TERMINAL.C:	    bufchain_consume(&term->printer_buf, size);
+TERMINAL.C://		if (*term->cfg.printer){
+TERMINAL.C:		   printer_job_data(term->print_job, &c, 1);
+TERMINAL.C:	    bufchain_consume(&term->printer_buf, 1);
+TERMINAL.C://    if (*term->cfg.printer){
+TERMINAL.C:       printer_finish_job(term->print_job);
+TERMINAL.C:       term->print_job = NULL;
+TERMINAL.C:	    	    ShellExecute(term->frontend, "open",
+TERMINAL.C:    term->printing = term->only_printing = FALSE;
+TERMINAL.C:    while (nchars > 0 || bufchain_size(&term->inbuf) > 0) {
+TERMINAL.C:		bufchain_prefix(&term->inbuf, &ret, &nchars);
+TERMINAL.C:		bufchain_consume(&term->inbuf, nchars);
+TERMINAL.C:	    if (term->cfg.logtype == LGTYP_DEBUG && term->logctx)
+TERMINAL.C:		logtraffic(term->logctx, (unsigned char) c, LGTYP_DEBUG);
+TERMINAL.C:	if (term->printing) {
+TERMINAL.C:	    bufchain_add(&term->printer_buf, &c, 1);
+TERMINAL.C:	    if (term->only_printing) {
+TERMINAL.C:		    term->print_state = 1;
+TERMINAL.C:		    term->print_state = 2;
+TERMINAL.C:		else if (c == '[' && term->print_state == 1)
+TERMINAL.C:		    term->print_state = 2;
+TERMINAL.C:		else if (c == '4' && term->print_state == 2)
+TERMINAL.C:		    term->print_state = 3;
+TERMINAL.C:		else if (c == 'i' && term->print_state == 3)
+TERMINAL.C:		    term->print_state = 4;
+TERMINAL.C:		    term->print_state = 0;
+TERMINAL.C:		if (term->print_state == 4) {
+TERMINAL.C:	if (term->termstate == TOPLEVEL) {
+TERMINAL.C:		switch (term->utf_state) {
+TERMINAL.C:			if (term->ucsdata->unitab_ctrl[c] != 0xFF) 
+TERMINAL.C:			     c = term->ucsdata->unitab_ctrl[c];
+TERMINAL.C:			term->utf_size = term->utf_state = 1;
+TERMINAL.C:			term->utf_char = (c & 0x1f);
+TERMINAL.C:			term->utf_size = term->utf_state = 2;
+TERMINAL.C:			term->utf_char = (c & 0x0f);
+TERMINAL.C:			term->utf_size = term->utf_state = 3;
+TERMINAL.C:			term->utf_char = (c & 0x07);
+TERMINAL.C:			term->utf_size = term->utf_state = 4;
+TERMINAL.C:			term->utf_char = (c & 0x03);
+TERMINAL.C:			term->utf_size = term->utf_state = 5;
+TERMINAL.C:			term->utf_char = (c & 0x01);
+TERMINAL.C:			term->utf_state = 0;
+TERMINAL.C:		    term->utf_char = (term->utf_char << 6) | (c & 0x3f);
+TERMINAL.C:		    if (--term->utf_state)
+TERMINAL.C:		    c = term->utf_char;
+TERMINAL.C:			(c < 0x800 && term->utf_size >= 2) ||
+TERMINAL.C:			(c < 0x10000 && term->utf_size >= 3) ||
+TERMINAL.C:			(c < 0x200000 && term->utf_size >= 4) ||
+TERMINAL.C:			(c < 0x4000000 && term->utf_size >= 5))
+TERMINAL.C:	    else if(term->sco_acs && 
+TERMINAL.C:	       if (term->sco_acs == 2) c |= 0x80;
+TERMINAL.C:		switch (term->cset_attr[term->cset]) {
+TERMINAL.C:		    if (term->ucsdata->unitab_ctrl[c] != 0xFF)
+TERMINAL.C:			c = term->ucsdata->unitab_ctrl[c];
+TERMINAL.C:		    if (term->ucsdata->unitab_ctrl[c] != 0xFF)
+TERMINAL.C:			c = term->ucsdata->unitab_ctrl[c];
+TERMINAL.C:	if ((c & -32) == 0x80 && term->termstate < DO_CTRLS &&
+TERMINAL.C:	    !term->vt52_mode && has_compat(VT220)) {
+TERMINAL.C:	    term->termstate = SEEN_ESC;
+TERMINAL.C:	    term->esc_query = FALSE;
+TERMINAL.C:	if (c == '\177' && term->termstate < DO_CTRLS && has_compat(OTHER)) {
+TERMINAL.C:	    if (term->curs.x && !term->wrapnext)
+TERMINAL.C:		term->curs.x--;
+TERMINAL.C:	    term->wrapnext = FALSE;
+TERMINAL.C:	    if (!term->cfg.no_dbackspace)    /* destructive bksp might be disabled */
+TERMINAL.C:		*term->cpos = (' ' | term->curr_attr | ATTR_ASCII);
+TERMINAL.C:	if ((c & -32) == 0 && term->termstate < DO_CTRLS) {
+TERMINAL.C:		if (term->ldisc) {
+TERMINAL.C:		    for (s = term->cfg.answerback, d = abuf; *s; s++) {
+TERMINAL.C:		    lpage_send(term->ldisc, DEFAULT_CODEPAGE,
+TERMINAL.C:		    if (!term->beep_overloaded) {
+TERMINAL.C:			if (!term->beephead)
+TERMINAL.C:			    term->beephead = newbeep;
+TERMINAL.C:			    term->beeptail->next = newbeep;
+TERMINAL.C:			term->beeptail = newbeep;
+TERMINAL.C:			term->nbeeps++;
+TERMINAL.C:		    while (term->beephead &&
+TERMINAL.C:			   term->beephead->ticks < ticks - term->cfg.bellovl_t) {
+TERMINAL.C:			struct beeptime *tmp = term->beephead;
+TERMINAL.C:			term->beephead = tmp->next;
+TERMINAL.C:			if (!term->beephead)
+TERMINAL.C:			    term->beeptail = NULL;
+TERMINAL.C:			term->nbeeps--;
+TERMINAL.C:		    if (term->cfg.bellovl && term->beep_overloaded &&
+TERMINAL.C:			ticks - term->lastbeep >= (unsigned)term->cfg.bellovl_s) {
+TERMINAL.C:			term->beep_overloaded = FALSE;
+TERMINAL.C:		    } else if (term->cfg.bellovl && !term->beep_overloaded &&
+TERMINAL.C:			       term->nbeeps >= term->cfg.bellovl_n) {
+TERMINAL.C:			term->beep_overloaded = TRUE;
+TERMINAL.C:		    term->lastbeep = ticks;
+TERMINAL.C:		    if (!term->cfg.bellovl || !term->beep_overloaded) {
+TERMINAL.C:			beep(term->frontend, term->cfg.beep);
+TERMINAL.C:			if (term->cfg.beep == BELL_VISUAL) {
+TERMINAL.C:			    term->in_vbell = TRUE;
+TERMINAL.C:			    term->vbell_startpoint = ticks;
+TERMINAL.C:		    term->seen_disp_event = TRUE;
+TERMINAL.C:		if (term->curs.x == 0 &&
+TERMINAL.C:		    (term->curs.y == 0 || term->wrap == 0))
+TERMINAL.C:		else if (term->curs.x == 0 && term->curs.y > 0)
+TERMINAL.C:		    term->curs.x = term->cols - 1, term->curs.y--;
+TERMINAL.C:		else if (term->wrapnext)
+TERMINAL.C:		    term->wrapnext = FALSE;
+TERMINAL.C:		    term->curs.x--;
+TERMINAL.C:		term->seen_disp_event = TRUE;
+TERMINAL.C:		term->cset = 1;
+TERMINAL.C:		term->cset = 0;
+TERMINAL.C:		if (term->vt52_mode)
+TERMINAL.C:		    term->termstate = VT52_ESC;
+TERMINAL.C:		    term->termstate = SEEN_ESC;
+TERMINAL.C:		    term->esc_query = FALSE;
+TERMINAL.C:		term->curs.x = 0;
+TERMINAL.C:		term->wrapnext = FALSE;
+TERMINAL.C:		term->seen_disp_event = TRUE;
+TERMINAL.C:		term->paste_hold = 0;
+TERMINAL.C:		if (term->logctx)
+TERMINAL.C:		    logtraffic(term->logctx, (unsigned char) c, LGTYP_ASCII);
+TERMINAL.C:		    term->disptop = 0;
+TERMINAL.C:		    term->wrapnext = FALSE;
+TERMINAL.C:		    term->seen_disp_event = 1;
+TERMINAL.C:		if (term->curs.y == term->marg_b)
+TERMINAL.C:		    scroll(term, term->marg_t, term->marg_b, 1, TRUE);
+TERMINAL.C:		else if (term->curs.y < term->rows - 1)
+TERMINAL.C:		    term->curs.y++;
+TERMINAL.C:		if (term->cfg.lfhascr)
+TERMINAL.C:		    term->curs.x = 0;
+TERMINAL.C:		term->wrapnext = FALSE;
+TERMINAL.C:		term->seen_disp_event = 1;
+TERMINAL.C:		term->paste_hold = 0;
+TERMINAL.C:		if (term->logctx)
+TERMINAL.C:		    logtraffic(term->logctx, (unsigned char) c, LGTYP_ASCII);
+TERMINAL.C:		    pos old_curs = term->curs;
+TERMINAL.C:		    unsigned long *ldata = lineptr(term->curs.y);
+TERMINAL.C:			term->curs.x++;
+TERMINAL.C:		    } while (term->curs.x < term->cols - 1 &&
+TERMINAL.C:			     !term->tabs[term->curs.x]);
+TERMINAL.C:		    if ((ldata[term->cols] & LATTR_MODE) != LATTR_NORM) {
+TERMINAL.C:			if (term->curs.x >= term->cols / 2)
+TERMINAL.C:			    term->curs.x = term->cols / 2 - 1;
+TERMINAL.C:			if (term->curs.x >= term->cols)
+TERMINAL.C:			    term->curs.x = term->cols - 1;
+TERMINAL.C:		    check_selection(term, old_curs, term->curs);
+TERMINAL.C:		term->seen_disp_event = TRUE;
+TERMINAL.C:	    switch (term->termstate) {
+TERMINAL.C:		if (term->wrapnext && term->wrap) {
+TERMINAL.C:		    term->cpos[1] |= LATTR_WRAPPED;
+TERMINAL.C:		    if (term->curs.y == term->marg_b)
+TERMINAL.C:			scroll(term, term->marg_t, term->marg_b, 1, TRUE);
+TERMINAL.C:		    else if (term->curs.y < term->rows - 1)
+TERMINAL.C:			term->curs.y++;
+TERMINAL.C:		    term->curs.x = 0;
+TERMINAL.C:		    term->wrapnext = FALSE;
+TERMINAL.C:		if (term->insert)
+TERMINAL.C:		if (term->selstate != NO_SELECTION) {
+TERMINAL.C:		    pos cursplus = term->curs;
+TERMINAL.C:		    check_selection(term, term->curs, cursplus);
+TERMINAL.C:		    term->logctx)
+TERMINAL.C:		    logtraffic(term->logctx, (unsigned char) c, LGTYP_ASCII);
+TERMINAL.C:			check_boundary(term, term->curs.x, term->curs.y);
+TERMINAL.C:			check_boundary(term, term->curs.x+2, term->curs.y);
+TERMINAL.C:			if (term->curs.x == term->cols-1) {
+TERMINAL.C:			    *term->cpos++ = ATTR_ASCII | ' ' | term->curr_attr;
+TERMINAL.C:			    *term->cpos |= LATTR_WRAPPED | LATTR_WRAPPED2;
+TERMINAL.C:			    if (term->curs.y == term->marg_b)
+TERMINAL.C:				scroll(term, term->marg_t, term->marg_b,
+TERMINAL.C:			    else if (term->curs.y < term->rows - 1)
+TERMINAL.C:				term->curs.y++;
+TERMINAL.C:			    term->curs.x = 0;
+TERMINAL.C:			    check_boundary(term, term->curs.x, term->curs.y);
+TERMINAL.C:			    check_boundary(term, term->curs.x+2, term->curs.y);
+TERMINAL.C:			*term->cpos++ = c | term->curr_attr;
+TERMINAL.C:			*term->cpos++ = UCSWIDE | term->curr_attr;
+TERMINAL.C:			term->curs.x++;
+TERMINAL.C:			check_boundary(term, term->curs.x, term->curs.y);
+TERMINAL.C:			check_boundary(term, term->curs.x+1, term->curs.y);
+TERMINAL.C:			*term->cpos++ = c | term->curr_attr;
+TERMINAL.C:		term->curs.x++;
+TERMINAL.C:		if (term->curs.x == term->cols) {
+TERMINAL.C:		    term->cpos--;
+TERMINAL.C:		    term->curs.x--;
+TERMINAL.C:		    term->wrapnext = TRUE;
+TERMINAL.C:		    if (term->wrap && term->vt52_mode) {
+TERMINAL.C:			term->cpos[1] |= LATTR_WRAPPED;
+TERMINAL.C:			if (term->curs.y == term->marg_b)
+TERMINAL.C:			    scroll(term, term->marg_t, term->marg_b, 1, TRUE);
+TERMINAL.C:			else if (term->curs.y < term->rows - 1)
+TERMINAL.C:			    term->curs.y++;
+TERMINAL.C:			term->curs.x = 0;
+TERMINAL.C:			term->wrapnext = FALSE;
+TERMINAL.C:		term->seen_disp_event = 1;
+TERMINAL.C:		    term->termstate = TOPLEVEL;
+TERMINAL.C:		    if (term->esc_query)
+TERMINAL.C:			term->esc_query = -1;
+TERMINAL.C:			term->esc_query = c;
+TERMINAL.C:		term->termstate = TOPLEVEL;
+TERMINAL.C:		switch (ANSI(c, term->esc_query)) {
+TERMINAL.C:		    term->termstate = SEEN_CSI;
+TERMINAL.C:		    term->esc_nargs = 1;
+TERMINAL.C:		    term->esc_args[0] = ARG_DEFAULT;
+TERMINAL.C:		    term->esc_query = FALSE;
+TERMINAL.C:		    term->termstate = SEEN_OSC;
+TERMINAL.C:		    term->esc_args[0] = 0;
+TERMINAL.C:		    term->seen_disp_event = TRUE;
+TERMINAL.C:		    term->app_keypad_keys = TRUE;
+TERMINAL.C:		    term->app_keypad_keys = FALSE;
+TERMINAL.C:		    if (term->curs.y == term->marg_b)
+TERMINAL.C:			scroll(term, term->marg_t, term->marg_b, 1, TRUE);
+TERMINAL.C:		    else if (term->curs.y < term->rows - 1)
+TERMINAL.C:			term->curs.y++;
+TERMINAL.C:		    term->wrapnext = FALSE;
+TERMINAL.C:		    term->seen_disp_event = TRUE;
+TERMINAL.C:		    term->curs.x = 0;
+TERMINAL.C:		    if (term->curs.y == term->marg_b)
+TERMINAL.C:			scroll(term, term->marg_t, term->marg_b, 1, TRUE);
+TERMINAL.C:		    else if (term->curs.y < term->rows - 1)
+TERMINAL.C:			term->curs.y++;
+TERMINAL.C:		    term->wrapnext = FALSE;
+TERMINAL.C:		    term->seen_disp_event = TRUE;
+TERMINAL.C:		    if (term->curs.y == term->marg_t)
+TERMINAL.C:			scroll(term, term->marg_t, term->marg_b, -1, TRUE);
+TERMINAL.C:		    else if (term->curs.y > 0)
+TERMINAL.C:			term->curs.y--;
+TERMINAL.C:		    term->wrapnext = FALSE;
+TERMINAL.C:		    term->seen_disp_event = TRUE;
+TERMINAL.C:		    if (term->ldisc)
+TERMINAL.C:			ldisc_send(term->ldisc, term->id_string,
+TERMINAL.C:				   strlen(term->id_string), 0);
+TERMINAL.C:		    if (term->ldisc)   /* cause ldisc to notice changes */
+TERMINAL.C:			ldisc_send(term->ldisc, NULL, 0, 0);
+TERMINAL.C:		    if (term->reset_132) {
+TERMINAL.C:			if (!term->cfg.no_remote_resize)
+TERMINAL.C:			    request_resize(term->frontend, 80, term->rows);
+TERMINAL.C:			term->reset_132 = 0;
+TERMINAL.C:		    term->disptop = 0;
+TERMINAL.C:		    term->seen_disp_event = TRUE;
+TERMINAL.C:		    term->tabs[term->curs.x] = TRUE;
+TERMINAL.C:			for (i = 0; i < term->rows; i++) {
+TERMINAL.C:			    for (j = 0; j < term->cols; j++)
+TERMINAL.C:			    ldata[term->cols] = 0;
+TERMINAL.C:			term->disptop = 0;
+TERMINAL.C:			term->seen_disp_event = TRUE;
+TERMINAL.C:			scrbot.y = term->rows;
+TERMINAL.C:			switch (ANSI(c, term->esc_query)) {
+TERMINAL.C:			ldata = lineptr(term->curs.y);
+TERMINAL.C:			ldata[term->cols] &= ~LATTR_MODE;
+TERMINAL.C:			ldata[term->cols] |= nlattr;
+TERMINAL.C:		    if (!term->cfg.no_remote_charset)
+TERMINAL.C:			term->cset_attr[0] = ATTR_GBCHR;
+TERMINAL.C:		    if (!term->cfg.no_remote_charset)
+TERMINAL.C:			term->cset_attr[0] = ATTR_ASCII;
+TERMINAL.C:		    if (!term->cfg.no_remote_charset)
+TERMINAL.C:			term->cset_attr[0] = ATTR_LINEDRW;
+TERMINAL.C:		    if (!term->cfg.no_remote_charset)
+TERMINAL.C:			term->cset_attr[0] = ATTR_SCOACS; 
+TERMINAL.C:		    if (!term->cfg.no_remote_charset)
+TERMINAL.C:			term->cset_attr[1] = ATTR_GBCHR;
+TERMINAL.C:		    if (!term->cfg.no_remote_charset)
+TERMINAL.C:			term->cset_attr[1] = ATTR_ASCII;
+TERMINAL.C:		    if (!term->cfg.no_remote_charset)
+TERMINAL.C:			term->cset_attr[1] = ATTR_LINEDRW;
+TERMINAL.C:		    if (!term->cfg.no_remote_charset)
+TERMINAL.C:			term->cset_attr[1] = ATTR_SCOACS; 
+TERMINAL.C:		    if (!term->cfg.no_remote_charset)
+TERMINAL.C:			term->utf = 1;
+TERMINAL.C:		    if (!term->cfg.no_remote_charset)
+TERMINAL.C:			term->utf = 0;
+TERMINAL.C:		term->termstate = TOPLEVEL;  /* default */
+TERMINAL.C:		    if (term->esc_nargs <= ARGS_MAX) {
+TERMINAL.C:			if (term->esc_args[term->esc_nargs - 1] == ARG_DEFAULT)
+TERMINAL.C:			    term->esc_args[term->esc_nargs - 1] = 0;
+TERMINAL.C:			term->esc_args[term->esc_nargs - 1] =
+TERMINAL.C:			    10 * term->esc_args[term->esc_nargs - 1] + c - '0';
+TERMINAL.C:		    term->termstate = SEEN_CSI;
+TERMINAL.C:		    if (++term->esc_nargs <= ARGS_MAX)
+TERMINAL.C:			term->esc_args[term->esc_nargs - 1] = ARG_DEFAULT;
+TERMINAL.C:		    term->termstate = SEEN_CSI;
+TERMINAL.C:		    if (term->esc_query)
+TERMINAL.C:			term->esc_query = -1;
+TERMINAL.C:			term->esc_query = TRUE;
+TERMINAL.C:			term->esc_query = c;
+TERMINAL.C:		    term->termstate = SEEN_CSI;
+TERMINAL.C:		    switch (ANSI(c, term->esc_query)) {
+TERMINAL.C:			move(term, term->curs.x,
+TERMINAL.C:			     term->curs.y - def(term->esc_args[0], 1), 1);
+TERMINAL.C:			term->seen_disp_event = TRUE;
+TERMINAL.C:			move(term, term->curs.x,
+TERMINAL.C:			     term->curs.y + def(term->esc_args[0], 1), 1);
+TERMINAL.C:			term->seen_disp_event = TRUE;
+TERMINAL.C:			if (term->ldisc)
+TERMINAL.C:			    ldisc_send(term->ldisc, "\033[>0;136;0c", 11, 0);
+TERMINAL.C:			move(term, term->curs.x + def(term->esc_args[0], 1),
+TERMINAL.C:			     term->curs.y, 1);
+TERMINAL.C:			term->seen_disp_event = TRUE;
+TERMINAL.C:			move(term, term->curs.x - def(term->esc_args[0], 1),
+TERMINAL.C:			     term->curs.y, 1);
+TERMINAL.C:			term->seen_disp_event = TRUE;
+TERMINAL.C:			     term->curs.y + def(term->esc_args[0], 1), 1);
+TERMINAL.C:			term->seen_disp_event = TRUE;
+TERMINAL.C:			     term->curs.y - def(term->esc_args[0], 1), 1);
+TERMINAL.C:			term->seen_disp_event = TRUE;
+TERMINAL.C:			move(term, def(term->esc_args[0], 1) - 1,
+TERMINAL.C:			     term->curs.y, 0);
+TERMINAL.C:			term->seen_disp_event = TRUE;
+TERMINAL.C:			move(term, term->curs.x,
+TERMINAL.C:			     ((term->dec_om ? term->marg_t : 0) +
+TERMINAL.C:			      def(term->esc_args[0], 1) - 1),
+TERMINAL.C:			     (term->dec_om ? 2 : 0));
+TERMINAL.C:			term->seen_disp_event = TRUE;
+TERMINAL.C:			if (term->esc_nargs < 2)
+TERMINAL.C:			    term->esc_args[1] = ARG_DEFAULT;
+TERMINAL.C:			move(term, def(term->esc_args[1], 1) - 1,
+TERMINAL.C:			     ((term->dec_om ? term->marg_t : 0) +
+TERMINAL.C:			      def(term->esc_args[0], 1) - 1),
+TERMINAL.C:			     (term->dec_om ? 2 : 0));
+TERMINAL.C:			term->seen_disp_event = TRUE;
+TERMINAL.C:			    unsigned int i = def(term->esc_args[0], 0) + 1;
+TERMINAL.C:			term->disptop = 0;
+TERMINAL.C:			term->seen_disp_event = TRUE;
+TERMINAL.C:			    unsigned int i = def(term->esc_args[0], 0) + 1;
+TERMINAL.C:			term->seen_disp_event = TRUE;
+TERMINAL.C:			if (term->curs.y <= term->marg_b)
+TERMINAL.C:			    scroll(term, term->curs.y, term->marg_b,
+TERMINAL.C:				   -def(term->esc_args[0], 1), FALSE);
+TERMINAL.C:			term->seen_disp_event = TRUE;
+TERMINAL.C:			if (term->curs.y <= term->marg_b)
+TERMINAL.C:			    scroll(term, term->curs.y, term->marg_b,
+TERMINAL.C:				   def(term->esc_args[0], 1),
+TERMINAL.C:			term->seen_disp_event = TRUE;
+TERMINAL.C:			insch(term, def(term->esc_args[0], 1));
+TERMINAL.C:			term->seen_disp_event = TRUE;
+TERMINAL.C:			insch(term, -def(term->esc_args[0], 1));
+TERMINAL.C:			term->seen_disp_event = TRUE;
+TERMINAL.C:			if (term->ldisc)
+TERMINAL.C:			    ldisc_send(term->ldisc, term->id_string,
+TERMINAL.C: 				       strlen(term->id_string), 0);
+TERMINAL.C:			if (term->ldisc) {
+TERMINAL.C:			    if (term->esc_args[0] == 6) {
+TERMINAL.C:				sprintf(buf, "\033[%d;%dR", term->curs.y + 1,
+TERMINAL.C:					term->curs.x + 1);
+TERMINAL.C:				ldisc_send(term->ldisc, buf, strlen(buf), 0);
+TERMINAL.C:			    } else if (term->esc_args[0] == 5) {
+TERMINAL.C:				ldisc_send(term->ldisc, "\033[0n", 4, 0);
+TERMINAL.C:			    for (i = 0; i < term->esc_nargs; i++)
+TERMINAL.C:				toggle_mode(term, term->esc_args[i],
+TERMINAL.C:					    term->esc_query, TRUE);
+TERMINAL.C:			    if (term->esc_nargs != 1) break;
+TERMINAL.C://			    if (term->esc_args[0] == 5 && *term->cfg.printer) {
+TERMINAL.C:    			    if (term->esc_args[0] == 5) {
+TERMINAL.C:				term->printing = TRUE;
+TERMINAL.C:				term->only_printing = !term->esc_query;
+TERMINAL.C:				term->print_state = 0;
+TERMINAL.C:			    } else if (term->esc_args[0] == 4 &&
+TERMINAL.C:				       term->printing) {
+TERMINAL.C:			    for (i = 0; i < term->esc_nargs; i++)
+TERMINAL.C:				toggle_mode(term, term->esc_args[i],
+TERMINAL.C:					    term->esc_query, FALSE);
+TERMINAL.C:			if (term->esc_nargs == 1) {
+TERMINAL.C:			    if (term->esc_args[0] == 0) {
+TERMINAL.C:				term->tabs[term->curs.x] = FALSE;
+TERMINAL.C:			    } else if (term->esc_args[0] == 3) {
+TERMINAL.C:				for (i = 0; i < term->cols; i++)
+TERMINAL.C:				    term->tabs[i] = FALSE;
+TERMINAL.C:			if (term->esc_nargs <= 2) {
+TERMINAL.C:			    top = def(term->esc_args[0], 1) - 1;
+TERMINAL.C:			    bot = (term->esc_nargs <= 1
+TERMINAL.C:				   || term->esc_args[1] == 0 ?
+TERMINAL.C:				   term->rows :
+TERMINAL.C:				   def(term->esc_args[1], term->rows)) - 1;
+TERMINAL.C:			    if (bot >= term->rows)
+TERMINAL.C:				bot = term->rows - 1;
+TERMINAL.C:				term->marg_t = top;
+TERMINAL.C:				term->marg_b = bot;
+TERMINAL.C:				term->curs.x = 0;
+TERMINAL.C:				term->curs.y = (term->dec_om ?
+TERMINAL.C:						term->marg_t : 0);
+TERMINAL.C:				term->seen_disp_event = TRUE;
+TERMINAL.C:			    for (i = 0; i < term->esc_nargs; i++) {
+TERMINAL.C:				switch (def(term->esc_args[i], 0)) {
+TERMINAL.C:				    term->curr_attr = term->default_attr;
+TERMINAL.C:				    term->curr_attr |= ATTR_BOLD;
+TERMINAL.C:				    term->curr_attr |= ATTR_UNDER;
+TERMINAL.C:				    term->curr_attr |= ATTR_BLINK;
+TERMINAL.C:				    term->blink_is_real = FALSE;
+TERMINAL.C:				    term->curr_attr |= ATTR_BLINK;
+TERMINAL.C:				    term->curr_attr |= ATTR_REVERSE;
+TERMINAL.C:				    if (term->cfg.no_remote_charset) break;
+TERMINAL.C:				    term->sco_acs = 0; break;
+TERMINAL.C:				    if (term->cfg.no_remote_charset) break;
+TERMINAL.C:				    term->sco_acs = 1; break;
+TERMINAL.C:				    if (term->cfg.no_remote_charset) break;
+TERMINAL.C:				    term->sco_acs = 2; break;
+TERMINAL.C:				    term->curr_attr &= ~ATTR_BOLD;
+TERMINAL.C:				    term->curr_attr &= ~ATTR_UNDER;
+TERMINAL.C:				    term->curr_attr &= ~ATTR_BLINK;
+TERMINAL.C:				    term->curr_attr &= ~ATTR_REVERSE;
+TERMINAL.C:				    term->curr_attr &= ~ATTR_FGMASK;
+TERMINAL.C:				    term->curr_attr |=
+TERMINAL.C:					(term->esc_args[i] - 30)<<ATTR_FGSHIFT;
+TERMINAL.C:				    /* xterm-style bright foreground */
+TERMINAL.C:				    term->curr_attr &= ~ATTR_FGMASK;
+TERMINAL.C:				    term->curr_attr |=
+TERMINAL.C:					((term->esc_args[i] - 90 + 16)
+TERMINAL.C:				    term->curr_attr &= ~ATTR_FGMASK;
+TERMINAL.C:				    term->curr_attr |= ATTR_DEFFG;
+TERMINAL.C:				    term->curr_attr &= ~ATTR_BGMASK;
+TERMINAL.C:				    term->curr_attr |=
+TERMINAL.C:					(term->esc_args[i] - 40)<<ATTR_BGSHIFT;
+TERMINAL.C:				    /* xterm-style bright background */
+TERMINAL.C:				    term->curr_attr &= ~ATTR_BGMASK;
+TERMINAL.C:				    term->curr_attr |=
+TERMINAL.C:					((term->esc_args[i] - 100 + 16)
+TERMINAL.C:				    term->curr_attr &= ~ATTR_BGMASK;
+TERMINAL.C:				    term->curr_attr |= ATTR_DEFBG;
+TERMINAL.C:			    if (term->use_bce)
+TERMINAL.C:				term->erase_char = (' ' | ATTR_ASCII |
+TERMINAL.C:						    (term->curr_attr & 
+TERMINAL.C:			term->seen_disp_event = TRUE;
+TERMINAL.C:			if (term->esc_nargs <= 1
+TERMINAL.C:			    && (term->esc_args[0] < 1 ||
+TERMINAL.C:				term->esc_args[0] >= 24)) {
+TERMINAL.C:			    if (!term->cfg.no_remote_resize)
+TERMINAL.C:				request_resize(term->frontend, term->cols,
+TERMINAL.C:					       def(term->esc_args[0], 24));
+TERMINAL.C:			} else if (term->esc_nargs >= 1 &&
+TERMINAL.C:				   term->esc_args[0] >= 1 &&
+TERMINAL.C:				   term->esc_args[0] < 24) {
+TERMINAL.C:			    switch (term->esc_args[0]) {
+TERMINAL.C:				set_iconic(term->frontend, FALSE);
+TERMINAL.C:				set_iconic(term->frontend, TRUE);
+TERMINAL.C:				if (term->esc_nargs >= 3) {
+TERMINAL.C:				    if (!term->cfg.no_remote_resize)
+TERMINAL.C:					move_window(term->frontend,
+TERMINAL.C:						    def(term->esc_args[1], 0),
+TERMINAL.C:						    def(term->esc_args[2], 0));
+TERMINAL.C:				set_zorder(term->frontend, TRUE);
+TERMINAL.C:				set_zorder(term->frontend, FALSE);
+TERMINAL.C:				refresh_window(term->frontend);
+TERMINAL.C:				if (term->esc_nargs >= 3) {
+TERMINAL.C:				    if (!term->cfg.no_remote_resize)
+TERMINAL.C:					request_resize(term->frontend,
+TERMINAL.C:						       def(term->esc_args[2], term->cfg.width),
+TERMINAL.C:						       def(term->esc_args[1], term->cfg.height));
+TERMINAL.C:				if (term->esc_nargs >= 2)
+TERMINAL.C:				    set_zoomed(term->frontend,
+TERMINAL.C:					       term->esc_args[1] ?
+TERMINAL.C:				if (term->ldisc)
+TERMINAL.C:				    ldisc_send(term->ldisc,
+TERMINAL.C:					       is_iconic(term->frontend) ?
+TERMINAL.C:				if (term->ldisc) {
+TERMINAL.C:				    get_window_pos(term->frontend, &x, &y);
+TERMINAL.C:				    ldisc_send(term->ldisc, buf, len, 0);
+TERMINAL.C:				if (term->ldisc) {
+TERMINAL.C:				    get_window_pixels(term->frontend, &x, &y);
+TERMINAL.C:				    ldisc_send(term->ldisc, buf, len, 0);
+TERMINAL.C:				if (term->ldisc) {
+TERMINAL.C:						  term->rows, term->cols);
+TERMINAL.C:				    ldisc_send(term->ldisc, buf, len, 0);
+TERMINAL.C:				if (term->ldisc &&
+TERMINAL.C:				    !term->cfg.no_remote_qtitle) {
+TERMINAL.C:				    p = get_window_title(term->frontend, TRUE);
+TERMINAL.C:				    ldisc_send(term->ldisc, "\033]L", 3, 0);
+TERMINAL.C:				    ldisc_send(term->ldisc, p, len, 0);
+TERMINAL.C:				    ldisc_send(term->ldisc, "\033\\", 2, 0);
+TERMINAL.C:				if (term->ldisc &&
+TERMINAL.C:				    !term->cfg.no_remote_qtitle) {
+TERMINAL.C:				    p = get_window_title(term->frontend,FALSE);
+TERMINAL.C:				    ldisc_send(term->ldisc, "\033]l", 3, 0);
+TERMINAL.C:				    ldisc_send(term->ldisc, p, len, 0);
+TERMINAL.C:				    ldisc_send(term->ldisc, "\033\\", 2, 0);
+TERMINAL.C:			scroll(term, term->marg_t, term->marg_b,
+TERMINAL.C:			       def(term->esc_args[0], 1), TRUE);
+TERMINAL.C:			term->wrapnext = FALSE;
+TERMINAL.C:			term->seen_disp_event = TRUE;
+TERMINAL.C:			scroll(term, term->marg_t, term->marg_b,
+TERMINAL.C:			       -def(term->esc_args[0], 1), TRUE);
+TERMINAL.C:			term->wrapnext = FALSE;
+TERMINAL.C:			term->seen_disp_event = TRUE;
+TERMINAL.C:			if (term->esc_nargs == 1 && term->esc_args[0] > 0) {
+TERMINAL.C:			    if (!term->cfg.no_remote_resize)
+TERMINAL.C:				request_resize(term->frontend, term->cols,
+TERMINAL.C:					       def(term->esc_args[0],
+TERMINAL.C:						   term->cfg.height));
+TERMINAL.C:			if (term->esc_nargs <= 1) {
+TERMINAL.C:			    if (!term->cfg.no_remote_resize)
+TERMINAL.C:				request_resize(term->frontend,
+TERMINAL.C:					       def(term->esc_args[0],
+TERMINAL.C:						   term->cfg.width), term->rows);
+TERMINAL.C:			    int n = def(term->esc_args[0], 1);
+TERMINAL.C:			    unsigned long *p = term->cpos;
+TERMINAL.C:			    if (n > term->cols - term->curs.x)
+TERMINAL.C:				n = term->cols - term->curs.x;
+TERMINAL.C:			    cursplus = term->curs;
+TERMINAL.C:			    check_boundary(term, term->curs.x, term->curs.y);
+TERMINAL.C:			    check_boundary(term, term->curs.x+n, term->curs.y);
+TERMINAL.C:			    check_selection(term, term->curs, cursplus);
+TERMINAL.C:				*p++ = term->erase_char;
+TERMINAL.C:			    term->seen_disp_event = TRUE;
+TERMINAL.C:			if (term->ldisc) {
+TERMINAL.C:			    int i = def(term->esc_args[0], 0);
+TERMINAL.C:				ldisc_send(term->ldisc, buf, 20, 0);
+TERMINAL.C:			    int i = def(term->esc_args[0], 1);
+TERMINAL.C:			    pos old_curs = term->curs;
+TERMINAL.C:			    for(;i>0 && term->curs.x>0; i--) {
+TERMINAL.C:				    term->curs.x--;
+TERMINAL.C:				} while (term->curs.x >0 &&
+TERMINAL.C:					 !term->tabs[term->curs.x]);
+TERMINAL.C:			    check_selection(term, old_curs, term->curs);
+TERMINAL.C:			switch(term->esc_args[0]) {
+TERMINAL.C:			    term->cursor_on = FALSE;
+TERMINAL.C:			    term->big_cursor = FALSE;
+TERMINAL.C:			    term->cursor_on = TRUE;
+TERMINAL.C:			    term->big_cursor = TRUE;
+TERMINAL.C:			    term->cursor_on = TRUE;
+TERMINAL.C:			if (term->esc_nargs >= 2) {
+TERMINAL.C:			    if (term->esc_args[0] > term->esc_args[1])
+TERMINAL.C:				term->cursor_on = FALSE;
+TERMINAL.C:				term->cursor_on = TRUE;
+TERMINAL.C:			term->blink_is_real = FALSE;
+TERMINAL.C:			if (term->esc_args[0]>=1)
+TERMINAL.C:			    term->curr_attr |= ATTR_BLINK;
+TERMINAL.C:			    term->curr_attr &= ~ATTR_BLINK;
+TERMINAL.C:			term->blink_is_real = (term->esc_args[0] >= 1);
+TERMINAL.C:			if (term->esc_args[0] >= 0 && term->esc_args[0] < 16) {
+TERMINAL.C: 				(sco2ansicolour[term->esc_args[0] & 0x7] |
+TERMINAL.C:				 ((term->esc_args[0] & 0x8) << 1)) <<
+TERMINAL.C:			    term->curr_attr &= ~ATTR_FGMASK;
+TERMINAL.C:			    term->curr_attr |= colour;
+TERMINAL.C:			    term->default_attr &= ~ATTR_FGMASK;
+TERMINAL.C:			    term->default_attr |= colour;
+TERMINAL.C:			if (term->esc_args[0] >= 0 && term->esc_args[0] < 16) {
+TERMINAL.C: 				(sco2ansicolour[term->esc_args[0] & 0x7] |
+TERMINAL.C:				 ((term->esc_args[0] & 0x8) << 1)) <<
+TERMINAL.C:			    term->curr_attr &= ~ATTR_BGMASK;
+TERMINAL.C:			    term->curr_attr |= colour;
+TERMINAL.C:			    term->default_attr &= ~ATTR_BGMASK;
+TERMINAL.C:			    term->default_attr |= colour;
+TERMINAL.C:			term->use_bce = (term->esc_args[0] <= 0);
+TERMINAL.C:			term->erase_char = ERASE_CHAR;
+TERMINAL.C:			if (term->use_bce)
+TERMINAL.C:			    term->erase_char = (' ' | ATTR_ASCII |
+TERMINAL.C:						(term->curr_attr & 
+TERMINAL.C:			switch (term->esc_args[0]) {
+TERMINAL.C:			    term->compatibility_level &= ~TM_VTXXX;
+TERMINAL.C:			    term->compatibility_level |= TM_VT102;
+TERMINAL.C:			    term->compatibility_level &= ~TM_VTXXX;
+TERMINAL.C:			    term->compatibility_level |= TM_VT220;
+TERMINAL.C:			    if (term->esc_args[0] > 60 &&
+TERMINAL.C:				term->esc_args[0] < 70)
+TERMINAL.C:				term->compatibility_level |= TM_VTXXX;
+TERMINAL.C:			    term->compatibility_level &= TM_VTXXX;
+TERMINAL.C:			    term->compatibility_level = TM_PUTTY;
+TERMINAL.C:			    term->compatibility_level = TM_SCOANSI;
+TERMINAL.C:			    term->compatibility_level = TM_PUTTY;
+TERMINAL.C:			if (term->esc_args[0] == 50) {
+TERMINAL.C:			    strcpy(term->id_string, "\033[?");
+TERMINAL.C:			    for (i = 1; i < term->esc_nargs; i++) {
+TERMINAL.C:				    strcat(term->id_string, ";");
+TERMINAL.C:				sprintf(lbuf, "%d", term->esc_args[i]);
+TERMINAL.C:				strcat(term->id_string, lbuf);
+TERMINAL.C:			    strcat(term->id_string, "c");
+TERMINAL.C:			    if (!term->cfg.no_remote_resize) {
+TERMINAL.C:				if (term->reset_132)
+TERMINAL.C:		term->osc_w = FALSE;
+TERMINAL.C:		    term->termstate = SEEN_OSC_P;
+TERMINAL.C:		    term->osc_strlen = 0;
+TERMINAL.C:		    palette_reset(term->frontend);
+TERMINAL.C:		    term->termstate = TOPLEVEL;
+TERMINAL.C:		    term->termstate = SEEN_OSC_W;
+TERMINAL.C:		    term->osc_w = TRUE;
+TERMINAL.C:		    term->esc_args[0] = 10 * term->esc_args[0] + c - '0';
+TERMINAL.C:		    if (term->esc_args[0] == 2) {
+TERMINAL.C:			term->esc_args[0] = 1;
+TERMINAL.C:		    term->termstate = OSC_STRING;
+TERMINAL.C:		    term->osc_strlen = 0;
+TERMINAL.C:		    term->termstate = TOPLEVEL;
+TERMINAL.C:		    term->termstate = TOPLEVEL;
+TERMINAL.C:		    term->termstate = OSC_MAYBE_ST;
+TERMINAL.C:		else if (term->osc_strlen < OSC_STR_MAX)
+TERMINAL.C:		    term->osc_string[term->osc_strlen++] = c;
+TERMINAL.C:		    int max = (term->osc_strlen == 0 ? 21 : 16);
+TERMINAL.C:			term->termstate = TOPLEVEL;
+TERMINAL.C:		    term->osc_string[term->osc_strlen++] = val;
+TERMINAL.C:		    if (term->osc_strlen >= 7) {
+TERMINAL.C:			palette_set(term->frontend, term->osc_string[0],
+TERMINAL.C:				    term->osc_string[1] * 16 + term->osc_string[2],
+TERMINAL.C:				    term->osc_string[3] * 16 + term->osc_string[4],
+TERMINAL.C:				    term->osc_string[5] * 16 + term->osc_string[6]);
+TERMINAL.C:			term->termstate = TOPLEVEL;
+TERMINAL.C:		    term->esc_args[0] = 10 * term->esc_args[0] + c - '0';
+TERMINAL.C:		    term->termstate = OSC_STRING;
+TERMINAL.C:		    term->osc_strlen = 0;
+TERMINAL.C:		term->termstate = TOPLEVEL;
+TERMINAL.C:		term->seen_disp_event = TRUE;
+TERMINAL.C:		    move(term, term->curs.x, term->curs.y - 1, 1);
+TERMINAL.C:		    move(term, term->curs.x, term->curs.y + 1, 1);
+TERMINAL.C:		    move(term, term->curs.x + 1, term->curs.y, 1);
+TERMINAL.C:		    move(term, term->curs.x - 1, term->curs.y, 1);
+TERMINAL.C:		    term->cset_attr[term->cset = 0] = ATTR_LINEDRW;
+TERMINAL.C:		    term->cset_attr[term->cset = 0] = ATTR_ASCII;
+TERMINAL.C:		    if (term->curs.y == 0)
+TERMINAL.C:			scroll(term, 0, term->rows - 1, -1, TRUE);
+TERMINAL.C:		    else if (term->curs.y > 0)
+TERMINAL.C:			term->curs.y--;
+TERMINAL.C:		    term->wrapnext = FALSE;
+TERMINAL.C:		    term->disptop = 0;
+TERMINAL.C:		    term->termstate = VT52_Y1;
+TERMINAL.C:		    if (term->ldisc)
+TERMINAL.C:			ldisc_send(term->ldisc, "\033/Z", 3, 0);
+TERMINAL.C:		    term->app_keypad_keys = TRUE;
+TERMINAL.C:		    term->app_keypad_keys = FALSE;
+TERMINAL.C:		    term->vt52_mode = FALSE;
+TERMINAL.C:		    term->blink_is_real = term->cfg.blinktext;
+TERMINAL.C:		    term->disptop = 0;
+TERMINAL.C:		    if (term->curs.y <= term->marg_b)
+TERMINAL.C:			scroll(term, term->curs.y, term->marg_b, -1, FALSE);
+TERMINAL.C:		    if (term->curs.y <= term->marg_b)
+TERMINAL.C:			scroll(term, term->curs.y, term->marg_b, 1, TRUE);
+TERMINAL.C:		    term->termstate = VT52_FG;
+TERMINAL.C:		    term->termstate = VT52_BG;
+TERMINAL.C:		    term->disptop = 0;
+TERMINAL.C:		    term->cursor_on = TRUE;
+TERMINAL.C:		    term->cursor_on = FALSE;
+TERMINAL.C:		    term->curs.x = 0;
+TERMINAL.C:		    term->wrapnext = FALSE;
+TERMINAL.C:		    term->curr_attr |= ATTR_REVERSE;
+TERMINAL.C:		    term->curr_attr &= ~ATTR_REVERSE;
+TERMINAL.C:		    term->wrap = 1;
+TERMINAL.C:		    term->wrap = 0;
+TERMINAL.C:		    term->vt52_bold = FALSE;
+TERMINAL.C:		    term->curr_attr = ATTR_DEFAULT;
+TERMINAL.C:		    if (term->use_bce)
+TERMINAL.C:			term->erase_char = (' ' | ATTR_ASCII |
+TERMINAL.C:					    (term->curr_attr & 
+TERMINAL.C:		    term->curr_attr |= ATTR_UNDER;
+TERMINAL.C:		    term->curr_attr &= ~ATTR_UNDER;
+TERMINAL.C:		    term->vt52_bold = TRUE;
+TERMINAL.C:		    term->curr_attr |= ATTR_BOLD;
+TERMINAL.C:		    term->vt52_bold = FALSE;
+TERMINAL.C:		    term->curr_attr &= ~ATTR_BOLD;
+TERMINAL.C:		term->termstate = VT52_Y2;
+TERMINAL.C:		move(term, term->curs.x, c - ' ', 0);
+TERMINAL.C:		term->termstate = TOPLEVEL;
+TERMINAL.C:		move(term, c - ' ', term->curs.y, 0);
+TERMINAL.C:		term->termstate = TOPLEVEL;
+TERMINAL.C:		term->curr_attr &= ~ATTR_FGMASK;
+TERMINAL.C:		term->curr_attr &= ~ATTR_BOLD;
+TERMINAL.C:		term->curr_attr |= (c & 0x7) << ATTR_FGSHIFT;
+TERMINAL.C:		if ((c & 0x8) || term->vt52_bold)
+TERMINAL.C:		    term->curr_attr |= ATTR_BOLD;
+TERMINAL.C:		if (term->use_bce)
+TERMINAL.C:		    term->erase_char = (' ' | ATTR_ASCII |
+TERMINAL.C:					(term->curr_attr &
+TERMINAL.C:		term->termstate = TOPLEVEL;
+TERMINAL.C:		term->curr_attr &= ~ATTR_BGMASK;
+TERMINAL.C:		term->curr_attr &= ~ATTR_BLINK;
+TERMINAL.C:		term->curr_attr |= (c & 0x7) << ATTR_BGSHIFT;
+TERMINAL.C:		    term->curr_attr |= ATTR_BLINK;
+TERMINAL.C:		if (term->use_bce)
+TERMINAL.C:		    term->erase_char = (' ' | ATTR_ASCII |
+TERMINAL.C:					(term->curr_attr &
+TERMINAL.C:	if (term->selstate != NO_SELECTION) {
+TERMINAL.C:	    pos cursplus = term->curs;
+TERMINAL.C:	    check_selection(term, term->curs, cursplus);
+TERMINAL.C:    for (i = n = 0; i < term->cols; i++)
+TERMINAL.C:    if (!term->pre_bidi_cache)
+TERMINAL.C:    if (line >= term->bidi_cache_size)
+TERMINAL.C:    if (!term->pre_bidi_cache[line])
+TERMINAL.C:    if (!memcmp(term->pre_bidi_cache[line], lbefore,
+TERMINAL.C:    if (!term->pre_bidi_cache || term->bidi_cache_size <= line) {
+TERMINAL.C:	int j = term->bidi_cache_size;
+TERMINAL.C:	term->bidi_cache_size = line+1;
+TERMINAL.C:	term->pre_bidi_cache = sresize(term->pre_bidi_cache,
+TERMINAL.C:				       term->bidi_cache_size,
+TERMINAL.C:	term->post_bidi_cache = sresize(term->post_bidi_cache,
+TERMINAL.C:					term->bidi_cache_size,
+TERMINAL.C:	while (j < term->bidi_cache_size) {
+TERMINAL.C:	    term->pre_bidi_cache[j] = term->post_bidi_cache[j] = NULL;
+TERMINAL.C:    sfree(term->pre_bidi_cache[line]);
+TERMINAL.C:    sfree(term->post_bidi_cache[line]);
+TERMINAL.C:    term->pre_bidi_cache[line] = snewn(width, unsigned long);
+TERMINAL.C:    term->post_bidi_cache[line] = snewn(width, unsigned long);
+TERMINAL.C:    memcpy(term->pre_bidi_cache[line], lbefore, width * sizeof(unsigned long));
+TERMINAL.C:    memcpy(term->post_bidi_cache[line], lafter, width * sizeof(unsigned long));
+TERMINAL.C:    if (term->in_vbell) {
+TERMINAL.C:	if (ticks - term->vbell_startpoint >= VBELL_TIMEOUT)
+TERMINAL.C:	    term->in_vbell = FALSE;
+TERMINAL.C:    rv = (!term->rvideo ^ !term->in_vbell ? ATTR_REVERSE : 0);
+TERMINAL.C:    if (term->cursor_on) {
+TERMINAL.C:	if (term->has_focus) {
+TERMINAL.C:	    if (term->blinker || !term->cfg.blink_cur)
+TERMINAL.C:	if (term->wrapnext)
+TERMINAL.C:    our_curs_y = term->curs.y - term->disptop;
+TERMINAL.C:	unsigned long *ldata = lineptr(term->curs.y);
+TERMINAL.C:	our_curs_x = term->curs.x;
+TERMINAL.C:    if (term->dispcurs && (term->curstype != cursor ||
+TERMINAL.C:			   term->dispcurs !=
+TERMINAL.C:			   term->disptext + our_curs_y * (term->cols + 1) +
+TERMINAL.C:	if (term->dispcurs > term->disptext && 
+TERMINAL.C:	    (*term->dispcurs & (CHAR_MASK | CSET_MASK)) == UCSWIDE)
+TERMINAL.C:	    term->dispcurs[-1] |= ATTR_INVALID;
+TERMINAL.C:	if ( (term->dispcurs[1] & (CHAR_MASK | CSET_MASK)) == UCSWIDE)
+TERMINAL.C:	    term->dispcurs[1] |= ATTR_INVALID;
+TERMINAL.C:	*term->dispcurs |= ATTR_INVALID;
+TERMINAL.C:	term->curstype = 0;
+TERMINAL.C:    term->dispcurs = NULL;
+TERMINAL.C:    sr = term->scrollhead;
+TERMINAL.C:    term->scrollhead = term->scrolltail = NULL;
+TERMINAL.C:    for (i = 0; i < term->rows; i++) {
+TERMINAL.C:	scrpos.y = i + term->disptop;
+TERMINAL.C:	lattr = (ldata[term->cols] & LATTR_MODE);
+TERMINAL.C:	idx = i * (term->cols + 1);
+TERMINAL.C:	dirty_run = dirty_line = (ldata[term->cols] !=
+TERMINAL.C:				  term->disptext[idx + term->cols]);
+TERMINAL.C:	term->disptext[idx + term->cols] = ldata[term->cols];
+TERMINAL.C:	if(!term->cfg.bidi || !term->cfg.arabicshaping) {
+TERMINAL.C:	    if (!term_bidi_cache_hit(term, i, ldata, term->cols)) {
+TERMINAL.C:		for(it=0; it<term->cols ; it++)
+TERMINAL.C:			if (!term->cfg.rawcnp) {
+TERMINAL.C:			    uc = term->ucsdata->unitab_xterm[uc & 0xFF];
+TERMINAL.C:			uc = term->ucsdata->unitab_line[uc & 0xFF];
+TERMINAL.C:			uc = term->ucsdata->unitab_scoacs[uc&0xFF];
+TERMINAL.C:			uc = term->ucsdata->unitab_font[uc & 0xFF];
+TERMINAL.C:			uc = term->ucsdata->unitab_oemcp[uc & 0xFF];
+TERMINAL.C:		    term->wcFrom[it].origwc = term->wcFrom[it].wc = uc;
+TERMINAL.C:		    term->wcFrom[it].index = it;
+TERMINAL.C:		if(!term->cfg.bidi)
+TERMINAL.C:		    do_bidi(term->wcFrom, term->cols);
+TERMINAL.C:		if(!term->cfg.bidi && term->cfg.arabicshaping)
+TERMINAL.C:		    for(it=0; it<term->cols; it++)
+TERMINAL.C:			term->wcTo[it] = term->wcFrom[it];
+TERMINAL.C:		if(!term->cfg.arabicshaping)
+TERMINAL.C:		    do_shape(term->wcFrom, term->wcTo, term->cols);
+TERMINAL.C:		for(it=0; it<term->cols ; it++)
+TERMINAL.C:		    term->ltemp[it] = ldata[term->wcTo[it].index];
+TERMINAL.C:		    if (term->wcTo[it].origwc != term->wcTo[it].wc)
+TERMINAL.C:			term->ltemp[it] = ((term->ltemp[it] & 0xFFFF0000) |
+TERMINAL.C:					   term->wcTo[it].wc);
+TERMINAL.C:		term_bidi_cache_store(term, i, ldata, term->ltemp, term->cols);
+TERMINAL.C:		ldata = term->ltemp;
+TERMINAL.C:		ldata = term->post_bidi_cache[i];
+TERMINAL.C:	for (j = 0; j < term->cols; j++, idx++) {
+TERMINAL.C:		tchar = term->ucsdata->unitab_line[tchar & 0xFF];
+TERMINAL.C:		tchar = term->ucsdata->unitab_xterm[tchar & 0xFF];
+TERMINAL.C:		tchar = term->ucsdata->unitab_scoacs[tchar&0xFF]; 
+TERMINAL.C:	    if (term->selstate == DRAGGING || term->selstate == SELECTED) {
+TERMINAL.C:		if (term->seltype == LEXICOGRAPHIC)
+TERMINAL.C:		    selected = (posle(term->selstart, scrpos) &&
+TERMINAL.C:				poslt(scrpos, term->selend));
+TERMINAL.C:		    selected = (posPle(term->selstart, scrpos) &&
+TERMINAL.C:				posPlt(scrpos, term->selend));
+TERMINAL.C:	    if (term->blink_is_real && (tattr & ATTR_BLINK)) {
+TERMINAL.C:		if (term->has_focus && term->tblinker) {
+TERMINAL.C:		    tchar = term->ucsdata->unitab_line[(unsigned char)' '];
+TERMINAL.C:	    if ((tchar | tattr) != (term->disptext[idx]& ~ATTR_NARROW)) {
+TERMINAL.C:	    } else if (term->disptext[idx]&ATTR_NARROW)
+TERMINAL.C:		term->dispcurs = term->disptext + idx;
+TERMINAL.C:	    if ((term->disptext[idx] ^ tattr) & ATTR_WIDE)
+TERMINAL.C:	    break_run = (((tattr ^ attr) & term->attr_mask) ||
+TERMINAL.C:	    if (!term->ucsdata->dbcs_screenfont && !dirty_line) {
+TERMINAL.C:		if ((tchar | tattr) == term->disptext[idx])
+TERMINAL.C:		if (term->ucsdata->dbcs_screenfont)
+TERMINAL.C:	    if ((tchar | tattr) != term->disptext[idx])
+TERMINAL.C:	    term->disptext[idx] = tchar | tattr;
+TERMINAL.C:		if (++j < term->cols) {
+TERMINAL.C:		    if (term->disptext[idx] != *d)
+TERMINAL.C:		    term->disptext[idx] = *d;
+TERMINAL.C:	if (i == our_curs_y && (term->curstype != cursor || updated_line)) {
+TERMINAL.C:	    term->curstype = cursor;
+TERMINAL.C:    blink_diff = now - term->last_tblink;
+TERMINAL.C:	term->last_tblink = now;
+TERMINAL.C:	term->tblinker = !term->tblinker;
+TERMINAL.C:	term->blinker = 1;
+TERMINAL.C:	term->last_blink = now;
+TERMINAL.C:    blink_diff = now - term->last_blink;
+TERMINAL.C:    term->last_blink = now;
+TERMINAL.C:    term->blinker = !term->blinker;
+TERMINAL.C:    for (i = 0; i < term->rows * (term->cols + 1); i++)
+TERMINAL.C:	term->disptext[i] = ATTR_INVALID;
+TERMINAL.C:    if (right >= term->cols) right = term->cols-1;
+TERMINAL.C:    if (bottom >= term->rows) bottom = term->rows-1;
+TERMINAL.C:    for (i = top; i <= bottom && i < term->rows; i++) {
+TERMINAL.C:	if ((term->disptext[i * (term->cols + 1) + term->cols] &
+TERMINAL.C:	    for (j = left; j <= right && j < term->cols; j++)
+TERMINAL.C:		term->disptext[i * (term->cols + 1) + j] = ATTR_INVALID;
+TERMINAL.C:	    for (j = left / 2; j <= right / 2 + 1 && j < term->cols; j++)
+TERMINAL.C:		term->disptext[i * (term->cols + 1) + j] = ATTR_INVALID;
+TERMINAL.C:    int olddisptop = term->disptop;
+TERMINAL.C:    term->disptop = (rel < 0 ? 0 : rel > 0 ? sbtop : term->disptop) + where;
+TERMINAL.C:    if (term->disptop < sbtop)
+TERMINAL.C:	term->disptop = sbtop;
+TERMINAL.C:    if (term->disptop > 0)
+TERMINAL.C:	term->disptop = 0;
+TERMINAL.C:    shift = (term->disptop - olddisptop);
+TERMINAL.C:    if (shift < term->rows && shift > -term->rows)
+TERMINAL.C:	scroll_display(term, 0, term->rows - 1, shift);
+TERMINAL.C:	nlpos.x = term->cols;
+TERMINAL.C:	if (!(ldata[term->cols] & LATTR_WRAPPED)) {
+TERMINAL.C:	} else if (ldata[term->cols] & LATTR_WRAPPED2) {
+TERMINAL.C:		if (!term->cfg.rawcnp) {
+TERMINAL.C:		    uc = term->ucsdata->unitab_xterm[uc & 0xFF];
+TERMINAL.C:		uc = term->ucsdata->unitab_line[uc & 0xFF];
+TERMINAL.C:		uc = term->ucsdata->unitab_scoacs[uc&0xFF]; 
+TERMINAL.C:		uc = term->ucsdata->unitab_font[uc & 0xFF];
+TERMINAL.C:		uc = term->ucsdata->unitab_oemcp[uc & 0xFF];
+TERMINAL.C:		    if (is_dbcs_leadbyte(term->ucsdata->font_codepage, (BYTE) c)) {
+TERMINAL.C:			rv = mb_to_wc(term->ucsdata->font_codepage, 0, buf, 2, wbuf, 4);
+TERMINAL.C:			rv = mb_to_wc(term->ucsdata->font_codepage, 0, buf, 1, wbuf, 4);
+TERMINAL.C:    write_clip(term->frontend, workbuf, wblen, desel); /* transfer to clipbd */
+TERMINAL.C:    tree234 *screen = term->screen;
+TERMINAL.C:    bottom.x = term->cols;
+TERMINAL.C:	uc = term->ucsdata->unitab_xterm[uc & 0xFF];
+TERMINAL.C:	uc = term->ucsdata->unitab_line[uc & 0xFF];
+TERMINAL.C:	uc = term->ucsdata->unitab_scoacs[uc&0xFF]; 
+TERMINAL.C:	uc = term->ucsdata->unitab_font[uc & 0xFF];
+TERMINAL.C:	uc = term->ucsdata->unitab_oemcp[uc & 0xFF];
+TERMINAL.C:    if (term->ucsdata->dbcs_screenfont &&
+TERMINAL.C:	term->ucsdata->font_codepage == term->ucsdata->line_codepage)
+TERMINAL.C:	return term->wordness[uc];
+TERMINAL.C:    switch (term->selmode) {
+TERMINAL.C:	if (!(ldata[term->cols] & LATTR_WRAPPED)) {
+TERMINAL.C:	    unsigned long *q = ldata + term->cols;
+TERMINAL.C:	    if (q == ldata + term->cols)
+TERMINAL.C:		p.x = (dir == -1 ? q - ldata : term->cols - 1);
+TERMINAL.C:		int maxcols = (ldata[term->cols] & LATTR_WRAPPED2 ?
+TERMINAL.C:			       term->cols-1 : term->cols);
+TERMINAL.C:		    if (ldata[term->cols] & LATTR_WRAPPED) {
+TERMINAL.C:		    maxcols = (ldata2[term->cols] & LATTR_WRAPPED2 ?
+TERMINAL.C:			      term->cols-1 : term->cols);
+TERMINAL.C:		    if (ldata2[term->cols] & LATTR_WRAPPED) {
+TERMINAL.C:	p.x = (dir == -1 ? 0 : term->cols - 1);
+TERMINAL.C:    if (term->seltype == LEXICOGRAPHIC) {
+TERMINAL.C:	term->selstart = sel_spread_half(term, term->selstart, -1);
+TERMINAL.C:	decpos(term->selend);
+TERMINAL.C:	term->selend = sel_spread_half(term, term->selend, +1);
+TERMINAL.C:	incpos(term->selend);
+TERMINAL.C:    get_clip(term->frontend, &data, &len);
+TERMINAL.C:        if (term->paste_buffer)
+TERMINAL.C:            sfree(term->paste_buffer);
+TERMINAL.C:        term->paste_pos = term->paste_hold = term->paste_len = 0;
+TERMINAL.C:        term->paste_buffer = snewn(len, wchar_t);
+TERMINAL.C:                    term->paste_buffer[term->paste_len++] = q[i];
+TERMINAL.C:                term->paste_buffer[term->paste_len++] = '\015';
+TERMINAL.C:        if (term->paste_len < 256) {
+TERMINAL.C:            if (term->ldisc)
+TERMINAL.C:		luni_send(term->ldisc, term->paste_buffer, term->paste_len, 0);
+TERMINAL.C:            if (term->paste_buffer)
+TERMINAL.C:                sfree(term->paste_buffer);
+TERMINAL.C:            term->paste_buffer = 0;
+TERMINAL.C:            term->paste_pos = term->paste_hold = term->paste_len = 0;
+TERMINAL.C:    get_clip(term->frontend, NULL, NULL);
+TERMINAL.C:    int raw_mouse = (term->xterm_mouse &&
+TERMINAL.C:		     !term->cfg.no_mouse_rep &&
+TERMINAL.C:		     !(term->cfg.mouse_override && shift));
+TERMINAL.C:    if (y >= term->rows) {
+TERMINAL.C:	y = term->rows - 1;
+TERMINAL.C:	    x = term->cols - 1;
+TERMINAL.C:    if (x >= term->cols)
+TERMINAL.C:	x = term->cols - 1;
+TERMINAL.C:    selpoint.y = y + term->disptop;
+TERMINAL.C:    if ((ldata[term->cols] & LATTR_MODE) != LATTR_NORM)
+TERMINAL.C:	if (term->ldisc) {
+TERMINAL.C:		if (term->xterm_mouse == 1)
+TERMINAL.C:		term->mouse_is_down = 0;
+TERMINAL.C:		if (term->mouse_is_down == braw)
+TERMINAL.C:		term->mouse_is_down = braw;
+TERMINAL.C:	    ldisc_send(term->ldisc, abuf, 6, 0);
+TERMINAL.C:    if (!alt ^ !term->cfg.rect_select)
+TERMINAL.C:    if (term->selstate == NO_SELECTION) {
+TERMINAL.C:	term->seltype = default_seltype;
+TERMINAL.C:	term->selstate = ABOUT_TO;
+TERMINAL.C:	term->seltype = default_seltype;
+TERMINAL.C:	term->selanchor = selpoint;
+TERMINAL.C:	term->selmode = SM_CHAR;
+TERMINAL.C:	term->selmode = (a == MA_2CLK ? SM_WORD : SM_LINE);
+TERMINAL.C:	term->selstate = DRAGGING;
+TERMINAL.C:	term->selstart = term->selanchor = selpoint;
+TERMINAL.C:	term->selend = term->selstart;
+TERMINAL.C:	incpos(term->selend);
+TERMINAL.C:	if (term->selstate == ABOUT_TO && poseq(term->selanchor, selpoint))
+TERMINAL.C:	    term->selstate == SELECTED) {
+TERMINAL.C:	    if (term->seltype == LEXICOGRAPHIC) {
+TERMINAL.C:		if (posdiff(selpoint, term->selstart) <
+TERMINAL.C:		    posdiff(term->selend, term->selstart) / 2) {
+TERMINAL.C:		    term->selanchor = term->selend;
+TERMINAL.C:		    decpos(term->selanchor);
+TERMINAL.C:		    term->selanchor = term->selstart;
+TERMINAL.C:		if (2*selpoint.x < term->selstart.x + term->selend.x)
+TERMINAL.C:		    term->selanchor.x = term->selend.x-1;
+TERMINAL.C:		    term->selanchor.x = term->selstart.x;
+TERMINAL.C:		if (2*selpoint.y < term->selstart.y + term->selend.y)
+TERMINAL.C:		    term->selanchor.y = term->selend.y;
+TERMINAL.C:		    term->selanchor.y = term->selstart.y;
+TERMINAL.C:	    term->selstate = DRAGGING;
+TERMINAL.C:	if (term->selstate != ABOUT_TO && term->selstate != DRAGGING)
+TERMINAL.C:	    term->selanchor = selpoint;
+TERMINAL.C:	term->selstate = DRAGGING;
+TERMINAL.C:	if (term->seltype == LEXICOGRAPHIC) {
+TERMINAL.C:	    if (poslt(selpoint, term->selanchor)) {
+TERMINAL.C:		term->selstart = selpoint;
+TERMINAL.C:		term->selend = term->selanchor;
+TERMINAL.C:		incpos(term->selend);
+TERMINAL.C:		term->selstart = term->selanchor;
+TERMINAL.C:		term->selend = selpoint;
+TERMINAL.C:		incpos(term->selend);
+TERMINAL.C:	    term->selstart.x = min(term->selanchor.x, selpoint.x);
+TERMINAL.C:	    term->selend.x = 1+max(term->selanchor.x, selpoint.x);
+TERMINAL.C:	    term->selstart.y = min(term->selanchor.y, selpoint.y);
+TERMINAL.C:	    term->selend.y =   max(term->selanchor.y, selpoint.y);
+TERMINAL.C:	if (term->selstate == DRAGGING) {
+TERMINAL.C:	    clipme(term, term->selstart, term->selend,
+TERMINAL.C:		   (term->seltype == RECTANGULAR), FALSE);
+TERMINAL.C:	    term->selstate = SELECTED;
+TERMINAL.C:	    term->selstate = NO_SELECTION;
+TERMINAL.C:	request_paste(term->frontend);
+TERMINAL.C:    if ((flags & PKF_REPEAT) && term->repeat_off)
+TERMINAL.C:	    term->app_keypad_keys ^= 1;
+TERMINAL.C:    if (term->cfg.nethack_keypad) {
+TERMINAL.C:	if (term->cfg.funky_type == FUNKY_VT400 ||
+TERMINAL.C:	    ((term->cfg.funky_type == FUNKY_LINUX ||
+TERMINAL.C:	      term->cfg.funky_type == FUNKY_TILDE) &&
+TERMINAL.C:	     term->app_keypad_keys && !term->cfg.no_applic_k)) {
+TERMINAL.C:	if (term->app_keypad_keys && !term->cfg.no_applic_k) {
+TERMINAL.C:	    if (term->cfg.funky_type == FUNKY_XTERM && tlen > 0) {
+TERMINAL.C:	    if (term->vt52_mode) {
+TERMINAL.C:		*p++ = (term->cfg.bksp_is_delete ? 0x7F : 0x08);
+TERMINAL.C:		*p++ = (term->cfg.bksp_is_delete ? 0x08 : 0x7F);
+TERMINAL.C:	    if (term->cr_lf_return)
+TERMINAL.C:    if (term->cfg.funky_type == FUNKY_SCO) {
+TERMINAL.C:	if (term->cfg.funky_type == FUNKY_XTERM) {
+TERMINAL.C:	if (term->cfg.rxvt_homeend &&
+TERMINAL.C:	if (term->vt52_mode) {
+TERMINAL.C:	if ((term->vt52_mode || term->cfg.funky_type == FUNKY_VT100P) &&
+TERMINAL.C:	    p += sprintf((char *) p, term->vt52_mode ? "\x1B%c" : "\x1BO%c",
+TERMINAL.C:	if (term->cfg.funky_type == FUNKY_LINUX && keysym <= PK_F5) {
+TERMINAL.C:	if (term->cfg.funky_type == FUNKY_XTERM && keysym <= PK_F4) {
+TERMINAL.C:	    if (term->vt52_mode)
+TERMINAL.C:	if (term->vt52_mode)
+TERMINAL.C:	    int app_flg = (term->app_cursor_keys && !term->cfg.no_applic_c);
+TERMINAL.C:	    ldisc_send(term->ldisc, "\x1b", 1, 1);
+TERMINAL.C:	    ldisc_send(term->ldisc, output, p - output, 1);
+TERMINAL.C:	    luni_send(term->ldisc, text, tlen, 1);
+TERMINAL.C:    if (term->paste_len == 0)
+TERMINAL.C:    sfree(term->paste_buffer);
+TERMINAL.C:    term->paste_buffer = NULL;
+TERMINAL.C:    term->paste_len = 0;
+TERMINAL.C:    return term->paste_len != 0;
+TERMINAL.C:    if (term->paste_len == 0)
+TERMINAL.C:    if (term->paste_hold) {
+TERMINAL.C:	paste_diff = now - term->last_paste;
+TERMINAL.C:    term->paste_hold = 0;
+TERMINAL.C:    while (term->paste_pos < term->paste_len) {
+TERMINAL.C:	while (n + term->paste_pos < term->paste_len) {
+TERMINAL.C:	    if (term->paste_buffer[term->paste_pos + n++] == '\015')
+TERMINAL.C:	if (term->ldisc)
+TERMINAL.C:	    luni_send(term->ldisc, term->paste_buffer + term->paste_pos, n, 0);
+TERMINAL.C:	term->paste_pos += n;
+TERMINAL.C:	if (term->paste_pos < term->paste_len) {
+TERMINAL.C:	    term->paste_hold = 1;
+TERMINAL.C:    sfree(term->paste_buffer);
+TERMINAL.C:    term->paste_buffer = NULL;
+TERMINAL.C:    term->paste_len = 0;
+TERMINAL.C:    term->selstate = NO_SELECTION;
+TERMINAL.C:    term->selstart.x = term->selstart.y = term->selend.x = term->selend.y = 0;
+TERMINAL.C:	return term->term_echoing;
+TERMINAL.C:	return term->term_editing;
+TERMINAL.C:    bufchain_add(&term->inbuf, data, len);
+TERMINAL.C:    if (!term->in_term_out) {
+TERMINAL.C:	term->in_term_out = TRUE;
+TERMINAL.C:	term->in_term_out = FALSE;
+TERMINAL.C:    term->logctx = logctx;
+WINDOW.C:/* this allows xterm-style mouse handling. */
+WINDOW.C:    guess_width = extra_width + font_width * term->cols;
+WINDOW.C:    guess_height = extra_height + font_height * term->rows;
+WINDOW.C:    guess_width = extra_width + font_width * term->cols;
+WINDOW.C:    guess_height = extra_height + font_height * term->rows;
+WINDOW.C:	si.nMax = term->rows - 1;
+WINDOW.C:	si.nPage = term->rows;
+WINDOW.C:    term->has_focus = (GetForegroundWindow() == hwnd);
+WINDOW.C:	    term->has_focus = (GetForegroundWindow() == hwnd);
+WINDOW.C:	    if (term->in_vbell)
+WINDOW.C:	    else if (!term->has_focus)
+WINDOW.C:    if (h == term->rows && w == term->cols) return;
+WINDOW.C:	    (offset_width != (win_width-font_width*term->cols)/2 ||
+WINDOW.C:	     offset_height != (win_height-font_height*term->rows)/2) ){
+WINDOW.C:	offset_width = (win_width-font_width*term->cols)/2;
+WINDOW.C:	offset_height = (win_height-font_height*term->rows)/2;
+WINDOW.C:	    if (  font_width != win_width/term->cols || 
+WINDOW.C:		  font_height != win_height/term->rows) {
+WINDOW.C:		init_fonts(win_width/term->cols, win_height/term->rows);
+WINDOW.C:		offset_width = (win_width-font_width*term->cols)/2;
+WINDOW.C:		offset_height = (win_height-font_height*term->rows)/2;
+WINDOW.C:	    if (  font_width != win_width/term->cols || 
+WINDOW.C:		  font_height != win_height/term->rows) {
+WINDOW.C:		offset_width = (win_width-font_width*term->cols)/2;
+WINDOW.C:		offset_height = (win_height-font_height*term->rows)/2;
+WINDOW.C:	if (win_width != font_width*term->cols + offset_width*2 ||
+WINDOW.C:	    win_height != font_height*term->rows + offset_height*2) {
+WINDOW.C:		         font_width*term->cols + extra_width, 
+WINDOW.C:			 font_height*term->rows + extra_height,
+WINDOW.C:	if (win_width != font_width*term->cols + offset_width*2 ||
+WINDOW.C:	    win_height != font_height*term->rows + offset_height*2) {
+WINDOW.C:	    if ( term->rows > height || term->cols > width ) {
+WINDOW.C:		    if (term->cols > width)
+WINDOW.C:			    / term->cols;
+WINDOW.C:		    if (term->rows > height)
+WINDOW.C:			    / term->rows;
+WINDOW.C:		    if ( height > term->rows ) height = term->rows;
+WINDOW.C:		    if ( width > term->cols )  width = term->cols;
+WINDOW.C:		         font_width*term->cols + extra_width, 
+WINDOW.C:			 font_height*term->rows + extra_height,
+WINDOW.C:			font_width*term->cols + extra_width,
+WINDOW.C:			font_height*term->rows + extra_height));
+WINDOW.C:    if (font_width != (win_width-cfg.window_border*2)/term->cols || 
+WINDOW.C:	font_height != (win_height-cfg.window_border*2)/term->rows) {
+WINDOW.C:	init_fonts((win_width-cfg.window_border*2)/term->cols, 
+WINDOW.C:		   (win_height-cfg.window_border*2)/term->rows);
+WINDOW.C:	offset_width = (win_width-font_width*term->cols)/2;
+WINDOW.C:	offset_height = (win_height-font_height*term->rows)/2;
+WINDOW.C:		p.rcPaint.right >= offset_width + font_width*term->cols ||
+WINDOW.C:		p.rcPaint.bottom>= offset_height + font_height*term->rows)
+WINDOW.C:			offset_width+font_width*term->cols,
+WINDOW.C:			offset_height+font_height*term->rows);
+WINDOW.C:	term->has_focus = TRUE;
+WINDOW.C:	term->has_focus = FALSE;
+WINDOW.C:		    (cfg.height != term->rows || cfg.width != term->cols )) {
+WINDOW.C:	        cfg.height=term->rows; cfg.width=term->cols;
+WINDOW.C:	    w = (width + term->cols/2)/term->cols;
+WINDOW.C:	    h = (height + term->rows/2)/term->rows;
+WINDOW.C:	    if ( r->right != r->left + w*term->cols + ex_width)
+WINDOW.C:		r->left = r->right - w*term->cols - ex_width;
+WINDOW.C:		r->right = r->left + w*term->cols + ex_width;
+WINDOW.C:	    if (r->bottom != r->top + h*term->rows + ex_height)
+WINDOW.C:		r->top = r->bottom - h*term->rows - ex_height;
+WINDOW.C:		r->bottom = r->top + h*term->rows + ex_height;
+WINDOW.C:		    prev_rows = term->rows;
+WINDOW.C:		    prev_cols = term->cols;
+WINDOW.C:	    term_scroll(term, 0, +term->rows / 2);
+WINDOW.C:	    term_scroll(term, 0, -term->rows / 2);
+WINDOW.C:				-term->rows / 2 : term->rows / 2);
+WINDOW.C:    if (!term->has_focus) return;
+WINDOW.C:    if (!term->has_focus) return;
+WINDOW.C:    if (lattr != LATTR_NORM && x*2 >= term->cols)
+WINDOW.C:    if ((attr & TATTR_ACTCURS) && (cfg.cursor_type == 0 || term->big_cursor)) {
+WINDOW.C:    if (line_box.right > font_width*term->cols+offset_width)
+WINDOW.C:	line_box.right = font_width*term->cols+offset_width;
+WINDOW.C:    if ((attr & TATTR_ACTCURS) && (ctype == 0 || term->big_cursor)) {
+WINDOW.C:    if ((attr & TATTR_PASCURS) && (ctype == 0 || term->big_cursor)) {
+WINDOW.C:	     (cfg.funky_type <= 1 && term->app_keypad_keys &&
+WINDOW.C:    if (term->repeat_off &&
+WINDOW.C:    if (left_alt || (term->app_keypad_keys && !cfg.no_applic_k
+WINDOW.C:	    term->app_keypad_keys ^= 1;
+WINDOW.C:		 term->app_keypad_keys && !cfg.no_applic_k)) switch (wParam) {
+WINDOW.C:	    if (term->app_keypad_keys && !cfg.no_applic_k)
+WINDOW.C:		if (term->vt52_mode) {
+WINDOW.C:	if (shift_state == 0 && wParam == VK_RETURN && term->cr_lf_return) {
+WINDOW.C:	if (term->vt52_mode && code > 0 && code <= 6) {
+WINDOW.C:	if ((term->vt52_mode || cfg.funky_type == 4) && code >= 11 && code <= 24) {
+WINDOW.C:	    if (term->vt52_mode)
+WINDOW.C:	    if (term->vt52_mode)
+WINDOW.C:		if (term->vt52_mode)
+WINDOW.C:		    int app_flg = (term->app_cursor_keys && !cfg.no_applic_c);
+WINDOW.C:		    if (!term->app_keypad_keys)
+WINDOW.C:    r.right = offset_width + term->cols * font_width;
+WINDOW.C:    if (!term->has_focus) {

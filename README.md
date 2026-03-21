@@ -78,6 +78,29 @@ cFim := Chr(27) + "[4i"
 QQout(cEsc + cURL + cFim)
 ```
 
+### Integração com FenixReport
+
+O ClienteSAV trabalha em conjunto com o projeto
+[FenixReport](https://github.com/vperetti/FenixReport) — um visualizador de
+relatórios JasperReports distribuído junto com o cliente Fenix.
+
+Quando o servidor envia uma URL com prefixo `httpjr`, o ClienteSAV executa
+`fenixReport.jar` no diretório `c:\Fenix\`, passando a URL completa como parâmetro:
+
+```c
+ShellExecuteA(hwnd, "open", "fenixReport.jar", cURL, "c:\\Fenix\\", SW_SHOWDEFAULT);
+```
+
+O fluxo completo:
+1. Usuário solicita relatório no terminal do ERP
+2. Servidor gera o relatório JasperReports e envia via escape sequence:
+   `ESC[5i` + `httpjr://parametros-do-relatorio` + `ESC[4i`
+3. ClienteSAV intercepta, detecta prefixo `httpjr` e executa `fenixReport.jar`
+4. FenixReport abre o relatório na máquina do usuário com visualização e impressão
+
+O `fenixReport.jar` e suas dependências (`lib/`) estão incluídos em
+[`v3-putty074-2021/extras/`](v3-putty074-2021/extras/) para referência.
+
 ### Arquivos Modificados (marcados com `/*MEXIDAMINHA*/`)
 
 | Arquivo | Modificação |

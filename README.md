@@ -7,11 +7,11 @@ e executar relatórios via fenixReport.jar na máquina Windows do usuário.
 
 ## Versão Atual
 
-**v3.0** — Baseado no PuTTY 0.74 (Janeiro 2021)
+**v4.0** — Baseado no PuTTY 0.83 (Abril 2026)
 
-- Diretório: [`atual/`](atual/) (symlink para `v3-putty074-2021/`)
+- Diretório: [`atual/`](atual/) (symlink para `v4-putty083-2026/`)
 - Download: [Último release](../../releases/latest)
-- Binário: `ClienteSAV.exe` (1006K)
+- Binário: `ClienteSAV.exe` (~1002K)
 
 ## Como Funciona
 
@@ -119,18 +119,20 @@ O `fenixReport.jar` e suas dependências (`lib/`) estão incluídos em
 
 | Versão | Base PuTTY | Período | Status |
 |--------|-----------|---------|--------|
-| **v3** | 0.74 | 2020-2021 | **Atual** |
+| **v4** | 0.83 | 2026 | **Atual** |
+| v3 | 0.74 | 2020-2021 | Legado |
 | v2 | 0.56 | 2008-2011 | Legado |
 | v1 | 0.56 | 2004-2005 | Legado |
 
 ## Estrutura do Repositório
 
 ```
-atual/              → symlink para v3-putty074-2021/ (versão atual)
-v3-putty074-2021/   → PuTTY 0.74 com MEXIDAMINHA (2021)
-  original/         → Fonte PuTTY 0.74 original
+atual/              → symlink para v4-putty083-2026/ (versão atual)
+v4-putty083-2026/   → PuTTY 0.83 com MEXIDAMINHA (2026)
+  original/         → Fonte PuTTY 0.83 original
   modificado/       → Fonte com modificações MEXIDAMINHA
   bin/              → ClienteSAV.exe compilado
+v3-putty074-2021/   → PuTTY 0.74 com MEXIDAMINHA (2021)
 v2-putty056-2011/   → PuTTY 0.56 com MEXIDAMINHA evoluído (2008-2011)
 v1-putty056-2005/   → PuTTY 0.56 com MEXIDAMINHA inicial (2004-2005)
 docs/               → Documentação detalhada

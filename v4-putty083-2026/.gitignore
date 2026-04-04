@@ -1,0 +1,17 @@
+compile*.log
+last_write*.txt
+temp_append.txt
+.vs/
+Release/
+Debug/
+x64/
+*.dir/
+*.tlog/
+*.pdb
+*.obj
+*.lib
+*.exe
+!bin/ClienteSAV.exe
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
